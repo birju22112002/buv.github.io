@@ -1,0 +1,26 @@
+/** @format */
+
+.themebtns {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.container {
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+.light {
+  background-color: #2c2c2c;
+  color: white;
+}
+
+.dark {
+  background-color: #ffffff;
+  color: black;
+}
