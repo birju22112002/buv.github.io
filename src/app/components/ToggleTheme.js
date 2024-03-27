@@ -1,5 +1,7 @@
 /** @format */
 
+"use client";
+// ToggleTheme.js
 import React, { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import styles from "./ToggleTheme.module.css";
@@ -15,22 +17,9 @@ const ToggleTheme = () => {
     }
   };
 
-  const buttonStyle = {
-    width: "25px",
-    height: "25px",
-    borderRadius: "50%",
-    fontSize: "20px",
-    cursor: "pointer",
-    borderRadius: "3px",
-    color: "white",
-  };
-
   return (
     <>
-      <button
-        className={styles.themebtns}
-        style={buttonStyle}
-        onClick={handleToggleTheme}>
+      <button className={styles.themebtns} onClick={handleToggleTheme}>
         {theme === "light" ? "🌞" : "🌗"}
       </button>
     </>

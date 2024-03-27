@@ -5,6 +5,7 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "antd";
+import { ThemeProvider } from "./context/ThemeContext";
 
 export default function Home() {
   const router = useRouter();
@@ -14,15 +15,17 @@ export default function Home() {
   };
   return (
     <div>
-      <h1>Home</h1>
+      <ThemeProvider>
+        <h1>Home</h1>
 
-      <Button
-        type='primary'
-        style={buttonStyle}
-        onClick={() => router.push("/pages")}>
-        Admin
-      </Button>
-      <br />
+        <Button
+          type='primary'
+          style={buttonStyle}
+          onClick={() => router.push("/pages/admin")}>
+          Admin
+        </Button>
+        <br />
+      </ThemeProvider>
     </div>
   );
 }

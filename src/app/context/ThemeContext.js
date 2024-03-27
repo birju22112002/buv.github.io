@@ -2,6 +2,9 @@
 
 "use client";
 
+/** @format */
+/** @jsxImportSource @emotion/react */
+
 import React, { createContext, useState, useEffect } from "react";
 
 export const ThemeContext = createContext();
@@ -10,10 +13,7 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    const storedTheme =
-      typeof localStorage !== "undefined"
-        ? localStorage.getItem("theme")
-        : null;
+    const storedTheme = localStorage.getItem("theme");
     if (storedTheme) {
       setTheme(storedTheme);
     }
@@ -21,16 +21,12 @@ export const ThemeProvider = ({ children }) => {
 
   const switchLight = () => {
     setTheme("light");
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem("theme", "light");
-    }
+    localStorage.setItem("theme", "light");
   };
 
   const switchDark = () => {
     setTheme("dark");
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem("theme", "dark");
-    }
+    localStorage.setItem("theme", "dark");
   };
 
   useEffect(() => {

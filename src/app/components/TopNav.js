@@ -1,17 +1,23 @@
 /** @format */
 
+// TopNav.js
 import React, { useContext } from "react";
 import { Menu } from "antd";
-import { ThemeContext } from "../context/ThemeContext";
+
 import {
-  AppstoreOutlined,
   MailOutlined,
   SettingOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
-import ToggleTheme from "./ToggleTheme";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { ThemeContext } from "../context/ThemeContext";
 
 const { SubMenu } = Menu;
+
+const ToggleTheme = dynamic(() => import("./ToggleTheme"), {
+  ssr: false,
+});
 
 const TopNav = () => {
   const { theme } = useContext(ThemeContext);
