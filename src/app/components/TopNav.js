@@ -8,6 +8,8 @@ import {
   MailOutlined,
   SettingOutlined,
   AppstoreOutlined,
+  UserAddOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -27,16 +29,16 @@ const TopNav = () => {
       mode='horizontal'
       theme={theme}
       style={{
-        backgroundColor: theme === "dark" ? "#222222" : "#ffffff",
-        color: theme === "dark" ? "#ffffff" : "#000000",
+        backgroundColor: theme === "dark" ? "#222222" : "#f3f3f3",
+        color: theme === "dark" ? "#ffffff" : "#222222",
       }}>
       <Menu.Item key='mail' icon={<MailOutlined />}>
         <Link href='/'>BUV</Link>
       </Menu.Item>
-      <Menu.Item key='signup' icon={<AppstoreOutlined />}>
+      <Menu.Item key='signup' icon={<UserAddOutlined />}>
         <Link href='/pages/signup'>Signup</Link>
       </Menu.Item>
-      <Menu.Item key='signin' icon={<AppstoreOutlined />}>
+      <Menu.Item key='signin' icon={<UserOutlined />}>
         <Link href='/pages/signin'>Signin</Link>
       </Menu.Item>
       <SubMenu

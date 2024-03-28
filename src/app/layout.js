@@ -3,6 +3,7 @@
 
 import React from "react";
 import "./globals.css";
+import "./public/css/style.css";
 import { ThemeProvider } from "./context/ThemeContext";
 import TopNav from "./components/TopNav";
 
