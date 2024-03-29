@@ -5,12 +5,21 @@ import { Form, Input, Button, Col, Row } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { ThemeContext } from "../../context/ThemeContext";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 function Signup() {
   const { theme } = useContext(ThemeContext);
 
-  const onFinish = (values) => {
-    console.log("values => ", values);
+  const onFinish = async (values) => {
+    // console.log("values => ", values);
+    try {
+      const res = await axios.post("http://localhost:8000/api/signup", values);
+      console.log("err =>", res);
+    } catch (err) {
+      toast.error("error");
+      console.log(err);
+    }
   };
 
   return (
