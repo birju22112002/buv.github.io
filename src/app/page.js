@@ -1,30 +1,21 @@
 /** @format */
 
 "use client";
-
+import { useContext } from "react";
 import { useRouter } from "next/navigation";
-
-import { Button } from "antd";
 import { ThemeProvider } from "./context/ThemeContext";
+import { AuthContext } from "./context/auth";
 
 export default function Home() {
   const router = useRouter();
-  const buttonStyle = {
-    backgroundColor: "#3B82F6",
-    color: "white",
-  };
+  const [auth, setAuth] = useContext(AuthContext);
+
   return (
     <div>
       <ThemeProvider>
         <h1>Home</h1>
-
-        <Button
-          type='primary'
-          style={buttonStyle}
-          onClick={() => router.push("/pages/admin")}>
-          Admin
-        </Button>
         <br />
+        <pre>{JSON.stringify(auth, null, 4)}</pre>
       </ThemeProvider>
     </div>
   );

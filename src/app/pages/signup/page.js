@@ -5,20 +5,44 @@ import { Form, Input, Button, Col, Row } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { ThemeContext } from "../../context/ThemeContext";
+import { AuthContext } from "../../context/auth";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 function Signup() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const { theme } = useContext(ThemeContext);
+  const [auth, setAuth] = useContext(AuthContext);
+  // const router = useRouter();
 
   const onFinish = async (values) => {
     // console.log("values => ", values);
+    setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8000/api/signup", values);
-      console.log("err =>", res);
+      const { data } = await axios.post(
+        "http://localhost:8000/api/signup",
+        values
+      );
+      if (data?.error) {
+        toast.error(data.error);
+        setLoading(false);
+      } else {
+        //save in context
+        setAuth(data);
+        //save in local storage
+        localStorage.setItem("auth", JSON.stringify(data));
+
+        toast.success("Successfully signed up!");
+        router.push("/pages/admin");
+        setLoading(false);
+      }
     } catch (err) {
       toast.error("error");
       console.log(err);
+      setLoading(false);
     }
   };
 
@@ -66,6 +90,7 @@ function Signup() {
               type='primary'
               htmlType='submit'
               className='login-form-button'
+              loading={loading}
               style={{
                 backgroundColor: theme === "dark" ? "#333333" : "#f4f4f4",
                 border: "none",

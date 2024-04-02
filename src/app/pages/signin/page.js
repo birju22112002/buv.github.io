@@ -1,17 +1,44 @@
 /** @format */
 "use client";
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import axios from "axios";
 import { ThemeContext } from "../../context/ThemeContext";
+import { toast } from "react-hot-toast";
+import { AuthContext } from "../../context/auth";
+import { useRouter } from "next/navigation";
 
 function Signin() {
+  const [auth, setAuth] = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const { theme } = useContext(ThemeContext);
+  const router = useRouter();
 
-  const onFinish = (values) => {
-    console.log("values => ", values);
+  const onFinish = async (values) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        "http://localhost:8000/api/signin",
+        values
+      );
+      setAuth(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      toast.success("Successfully Signed in");
+      // Reset form fields after successful login
+      form.setFieldsValue({
+        email: "",
+        password: "",
+      });
+      setLoading(false); // Set loading back to false after successful login
+      // Redirect user to home page if needed
+      router.push("/");
+    } catch (err) {
+      setLoading(false);
+      toast.error("Error signing in!");
+    }
   };
 
   return (
@@ -44,7 +71,7 @@ function Signin() {
           </Form.Item>
 
           <Link
-            href='/forgot-password'
+            href='/pages/forgot'
             style={{
               color: theme === "dark" ? "#ffffff" : "#000000",
               textDecoration: "none",
@@ -65,7 +92,8 @@ function Signin() {
                 backgroundColor: theme === "dark" ? "#333333" : "#f4f4f4",
                 border: "none",
                 color: theme === "dark" ? "#ffffff" : "#000000",
-              }}>
+              }}
+              loading={loading}>
               Login
             </Button>
             <br />
