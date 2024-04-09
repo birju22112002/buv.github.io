@@ -9,6 +9,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/auth";
 import { useRouter } from "next/navigation";
+// import { headers } from "next/headers";
 
 function Signin() {
   const [auth, setAuth] = useContext(AuthContext);
@@ -24,17 +25,26 @@ function Signin() {
         "http://localhost:8000/api/signin",
         values
       );
-      setAuth(data);
-      localStorage.setItem("user", JSON.stringify(data));
-      toast.success("Successfully Signed in");
-      // Reset form fields after successful login
-      form.setFieldsValue({
-        email: "",
-        password: "",
-      });
-      setLoading(false); // Set loading back to false after successful login
-      // Redirect user to home page if needed
-      router.push("/");
+      if (data?.error) {
+        toast.error(data.error);
+        setLoading(false);
+      } else {
+        // console.log("signin response => ", data);
+        // save user and token to context
+        setAuth(data);
+        // save user and token to local storage
+        localStorage.setItem("auth", JSON.stringify(data));
+        toast.success("Successfully signed in");
+        // redirect user
+        if (data?.user?.role === "Admin") {
+          router.push("/pages/admin");
+        } else if (data?.user?.role === "Author") {
+          router.push("/author");
+        } else {
+          router.push("/subscriber");
+        }
+        // form.resetFields();
+      }
     } catch (err) {
       setLoading(false);
       toast.error("Error signing in!");

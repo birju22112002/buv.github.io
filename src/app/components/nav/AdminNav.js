@@ -76,14 +76,20 @@ const AdminNav = () => {
           </Menu.Item>
           <Menu.Item key='4'>
             <Link href='/pages/posts' className={activeName("/pages/posts")}>
-              Add New
+              <Menu.Item key='4'>
+                <Link
+                  href='/pages/posts'
+                  className={activeName("/pages/posts")}>
+                  Add New
+                </Link>
+              </Menu.Item>
             </Link>
           </Menu.Item>
           <Menu.Item key='5'>
             <Link
-              href='/admin/categories'
+              href='/pages/categories'
               className={activeName("/pages/posts1")}>
-              Categorie
+              Categories
             </Link>
           </Menu.Item>
         </SubMenu>

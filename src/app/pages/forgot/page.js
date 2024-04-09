@@ -13,12 +13,12 @@ import { useRouter } from "next/navigation";
 function forgotPassword() {
   const [auth, setAuth] = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
 
-  const ForgotPasswordRequest = async (values) => {
+  const forgotPasswordRequest = async (values) => {
     try {
       setLoading(true);
       const { data } = await axios.post("/pages/forgot", values);
@@ -27,13 +27,37 @@ function forgotPassword() {
         setLoading(false);
       } else {
         toast.success("Check your email. Password reset code is sent.");
+
         setVisible(true);
         setLoading(false);
+
         // router.push("/pages/signin");
       }
     } catch (err) {
       console.log(err);
       toast.error("Forgot Password error");
+      setLoading(false);
+    }
+  };
+
+  const resetPasswordRequest = async (values) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/pages/reset-password", values);
+      if (data?.error) {
+        toast.error(data.error);
+        setLoading(false);
+      } else {
+        toast.success(
+          "Password changed successfully. Please login with your new password"
+        );
+        form.resetFields(["email"]);
+        setLoading(false);
+        setVisible(false);
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Reset password failed. Try again.");
       setLoading(false);
     }
   };
@@ -48,7 +72,7 @@ function forgotPassword() {
           name='normal_login'
           className='login-form'
           initialValues={{ remember: true }}
-          onFinish={ForgotPasswordRequest}>
+          onFinish={visible ? resetPasswordRequest : forgotPasswordRequest}>
           <Form.Item name='email' rules={[{ type: "email" }]}>
             <Input
               prefix={<MailOutlined className='site-form-item-icon' />}
@@ -56,7 +80,31 @@ function forgotPassword() {
             />
           </Form.Item>
 
-          {visible && "SHOW FORM FIELD TO ENTER CODE AND NEW PASSWORD"}
+          {visible && (
+            <>
+              <Form.Item name='resetCode'>
+                <Input
+                  prefix={<MailOutlined className='site-form-item-icon' />}
+                  placeholder='Enter reset code'
+                />
+              </Form.Item>
+
+              <Form.Item
+                name='password'
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter your new Password!",
+                  },
+                ]}>
+                <Input.Password
+                  prefix={<LockOutlined className='site-form-item-icon' />}
+                  type='password'
+                  placeholder='New Password'
+                />
+              </Form.Item>
+            </>
+          )}
 
           <Form.Item>
             <Button

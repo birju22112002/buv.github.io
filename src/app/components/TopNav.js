@@ -34,6 +34,16 @@ const TopNav = () => {
     router.push("/pages/signin");
   };
 
+  const roleBasedLink = () => {
+    if (auth?.user?.role === "Admin") {
+      return "/pages/admin";
+    } else if (auth?.user?.role === "Author") {
+      return "/author";
+    } else {
+      return "/subscriber";
+    }
+  };
+
   return (
     <Menu
       mode='horizontal'
@@ -64,7 +74,7 @@ const TopNav = () => {
           <SubMenu
             key='SubMenu'
             icon={<SettingOutlined />}
-            title='Dashboard'
+            title={auth?.user?.name || "Dashboard"}
             style={{
               marginLeft: "auto",
             }}>
@@ -74,7 +84,7 @@ const TopNav = () => {
                 backgroundColor: theme === "dark" ? "#222222" : null,
               }}>
               <Menu.Item key='setting:2'>
-                <Link href='/pages/admin'>Admin</Link>
+                <Link href={roleBasedLink()}>Dashboard</Link>
               </Menu.Item>
             </Menu.ItemGroup>
           </SubMenu>
