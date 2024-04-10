@@ -1,6 +1,6 @@
 /** @format */
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -17,6 +17,11 @@ function Signin() {
   const [form] = Form.useForm();
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
+  useEffect(() => {
+    if (auth?.token) {
+      router.push("/");
+    }
+  }, [auth]);
 
   const onFinish = async (values) => {
     try {

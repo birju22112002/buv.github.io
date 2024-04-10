@@ -6,6 +6,7 @@ import AdminNav from "../nav/AdminNav";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../../context/auth";
 import { LoadingOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 import { Layout } from "antd";
 
@@ -19,16 +20,14 @@ const AdminLayout = (props) => {
   const [auth, setAuth] = useContext(AuthContext);
 
   useEffect(() => {
-    // if (auth?.user?.role !== "admin") {
-    //   router.push("/");
-    // } else {
-    //   setLoading(false);
-    // }
-    getCurrentAdmin();
+    if (auth?.token) {
+      getCurrentAdmin();
+    }
   }, [auth?.token]);
   const getCurrentAdmin = async () => {
     try {
       const { data } = await axios.get("/current-admin");
+
       setLoading(false);
     } catch (err) {
       console.log(err);

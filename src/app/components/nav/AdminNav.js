@@ -76,13 +76,7 @@ const AdminNav = () => {
           </Menu.Item>
           <Menu.Item key='4'>
             <Link href='/pages/posts' className={activeName("/pages/posts")}>
-              <Menu.Item key='4'>
-                <Link
-                  href='/pages/posts'
-                  className={activeName("/pages/posts")}>
-                  Add New
-                </Link>
-              </Menu.Item>
+              Add New
             </Link>
           </Menu.Item>
           <Menu.Item key='5'>
