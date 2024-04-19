@@ -6,6 +6,7 @@ import "./globals.css";
 import "./public/css/style.css";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/auth";
+import { PostProvider } from "./context/PostContext";
 import TopNav from "./components/TopNav";
 import { Toaster } from "react-hot-toast";
 
@@ -15,10 +16,14 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider>
           <AuthProvider>
-            <TopNav />
-            <Toaster />
-            {/* Layout UI */}
-            <main>{children}</main>
+            <PostProvider>
+              {" "}
+              {/* Add PostProvider here */}
+              <TopNav />
+              <Toaster />
+              {/* Layout UI */}
+              <main>{children}</main>
+            </PostProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

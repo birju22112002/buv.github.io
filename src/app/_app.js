@@ -4,7 +4,8 @@
 import React from "react";
 import App from "next/app";
 import RootLayout from "../app/layout";
-import { ThemeProvider } from "../app/context/ThemeContext";
+import { ThemeProvider } from "./context/theme";
+import "../../public/css/style.css";
 
 class MyApp extends App {
   render() {

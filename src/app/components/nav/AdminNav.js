@@ -73,8 +73,8 @@ const AdminNav = () => {
         <SubMenu key='2' icon={<PushpinOutlined />} title='Posts'>
           <Menu.Item key='/admin/posts/new'>
             <Link
-              href='/admin/posts/new'
-              className={current === "/admin/posts/new" ? "active" : null}>
+              href='/pages/posts/post'
+              className={current === "/pages/posts/post" ? "active" : null}>
               All Posts
             </Link>
           </Menu.Item>
