@@ -85,10 +85,12 @@ const AdminNav = () => {
               Add New
             </Link>
           </Menu.Item>
-          <Menu.Item key='/pages/categories'>
+          <Menu.Item key='/pages/admin/categories'>
             <Link
-              href='/pages/categories'
-              className={current === "/pages/categories" ? "active" : null}>
+              href='/pages/admin/categories'
+              className={
+                current === "/pages/admin/categories" ? "active" : null
+              }>
               Categories
             </Link>
           </Menu.Item>

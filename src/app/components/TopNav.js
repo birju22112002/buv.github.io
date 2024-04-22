@@ -3,11 +3,13 @@ import React, { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { Menu } from "antd";
 import {
+  AppstoreOutlined,
   MailOutlined,
   SettingOutlined,
   UserAddOutlined,
   UserOutlined,
   LogoutOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -52,8 +54,12 @@ const TopNav = () => {
         backgroundColor: theme === "dark" ? "#222222" : "#f3f3f3",
         color: theme === "dark" ? "#ffffff" : "#222222",
       }}>
-      <Menu.Item key='mail' icon={<MailOutlined />}>
+      <Menu.Item key='mail' icon={<AppstoreOutlined />}>
         <Link href='/'>BUV</Link>
+      </Menu.Item>
+
+      <Menu.Item key='posts' icon={<DatabaseOutlined />}>
+        <Link href='/posts'>Posts</Link>
       </Menu.Item>
 
       {auth?.user === null && (
