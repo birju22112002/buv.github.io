@@ -1,13 +1,16 @@
 /** @format */
 "use client";
 import { useContext, useState, useEffect, useCallback } from "react";
-import { Layout, Row, Col, Input, Select, Modal, Button } from "antd";
+import { Layout, Row, Col, Input, Select, Modal, Button, Image } from "antd";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import JoditEditor from "jodit-react";
 import { ThemeContext } from "../../context/ThemeContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { UploadOutlined } from "@ant-design/icons";
+import Media from "../../components/media/page";
+import { MediaContext } from "../../context/media";
 
 const { Option } = Select;
 
@@ -32,6 +35,7 @@ function NewPost() {
 
   // context
   const { theme, setTheme } = useContext(ThemeContext);
+  const [media, setMedia] = useContext(MediaContext);
 
   // state
   const [title, setTitle] = useState(savedTitle());
@@ -40,7 +44,7 @@ function NewPost() {
   const [loadedCategories, setLoadedCategories] = useState([]);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [visibleMedia, setVisibleMedia] = useState(false);
   // hook
 
   useEffect(() => {
@@ -63,6 +67,7 @@ function NewPost() {
         title,
         content,
         categories,
+        featuredImage: media?.selected?._id,
       });
       if (data?.error) {
         toast.error(data?.error);
@@ -72,6 +77,7 @@ function NewPost() {
         toast.success("Post created successfully");
         localStorage.removeItem("post-title");
         localStorage.removeItem("post-content");
+        setMedia({ ...media, selected: "" });
         router.push(`/pages/posts/post`);
       }
     } catch (err) {
@@ -127,6 +133,12 @@ function NewPost() {
             Preview
           </Button>
 
+          <Button
+            style={{ margin: "10px 0px 10px 0px", width: "100%" }}
+            onClick={() => setMedia({ ...media, showMediaModal: true })}>
+            <UploadOutlined /> Featured Image
+          </Button>
+
           <h4>Categories</h4>
 
           <Select
@@ -139,6 +151,12 @@ function NewPost() {
               <Option key={item.name}>{item.name}</Option>
             ))}
           </Select>
+
+          {media?.selected && (
+            <div style={{ marginTop: "15px" }}>
+              <Image width='100%' src={media?.selected?.url} />
+            </div>
+          )}
 
           <Button
             loading={loading}
@@ -164,6 +182,15 @@ function NewPost() {
               readOnly: true,
             }}
           />
+        </Modal>
+        <Modal
+          visible={media.showMediaModal}
+          title='Media'
+          onOk={() => setMedia({ ...media, showMediaModal: false })}
+          onCancel={() => setMedia({ ...media, showMediaModal: false })}
+          width={720}
+          footer={null}>
+          <Media />
         </Modal>
       </Row>
     </AdminLayout>

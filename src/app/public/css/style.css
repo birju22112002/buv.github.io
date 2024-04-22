@@ -3,3 +3,11 @@
   color: #1890ff !important;
   text-decoration: underline;
 }
+
+.ant-upload-list-item-card-actions {
+  display: none;
+}
+
+.ant-upload-drag {
+  height: 150px !important;
+}
