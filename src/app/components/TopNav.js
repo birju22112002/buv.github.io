@@ -58,8 +58,8 @@ const TopNav = () => {
         <Link href='/'>BUV</Link>
       </Menu.Item>
 
-      <Menu.Item key='posts' icon={<DatabaseOutlined />}>
-        <Link href='/posts'>Posts</Link>
+      <Menu.Item key='posts1' icon={<DatabaseOutlined />}>
+        <Link href='/pages/posts1'>Posts</Link>
       </Menu.Item>
 
       {auth?.user === null && (

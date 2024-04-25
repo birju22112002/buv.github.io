@@ -98,44 +98,44 @@ const AdminNav = () => {
 
         {/* library */}
         <SubMenu key='6' icon={<CameraOutlined />} title='Media'>
-          <Menu.Item key='/admin/media/library'>
+          <Menu.Item key='/pages/media/library'>
             <Link
-              href='/admin/media/library'
-              className={current === "/admin/media/library" ? "active" : null}>
+              href='/pages/media/library'
+              className={current === "/pages/media/library" ? "active" : null}>
               Library
             </Link>
           </Menu.Item>
-          <Menu.Item key='/admin/media/new'>
+          <Menu.Item key='/pages/media'>
             <Link
-              href='/admin/media/new'
-              className={current === "/admin/media/new" ? "active" : null}>
+              href='/pages/media'
+              className={current === "/pages/media" ? "active" : null}>
               Add New
             </Link>
           </Menu.Item>
         </SubMenu>
 
         {/* comments */}
-        <Menu.Item key='/admin/comments' icon={<CommentOutlined />}>
+        <Menu.Item key='/pages/admin/comments' icon={<CommentOutlined />}>
           <Link
-            href='/admin/comments'
-            className={current === "/admin/comments" ? "active" : null}>
+            href='/pages/admin/comments'
+            className={current === "/pages/admin/comments" ? "active" : null}>
             Comments
           </Link>
         </Menu.Item>
 
         {/* users */}
         <SubMenu key='10' icon={<UserSwitchOutlined />} title='Users'>
-          <Menu.Item key='/admin/users'>
+          <Menu.Item key='/pages/admin/users'>
             <Link
-              href='/admin/users'
-              className={current === "/admin/users" ? "active" : null}>
+              href='/pages/admin/users'
+              className={current === "/pages/admin/users" ? "active" : null}>
               All Users
             </Link>
           </Menu.Item>
-          <Menu.Item key='/admin/users/new'>
+          <Menu.Item key='/pages/admin/users'>
             <Link
-              href='/admin/users/new'
-              className={current === "/admin/users/new" ? "active" : null}>
+              href='/pages/admin/users'
+              className={current === "/pages/admin/users" ? "active" : null}>
               Add New
             </Link>
           </Menu.Item>

@@ -2,7 +2,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Col } from "antd";
+import { Row, Col, Card, Avatar } from "antd";
+import Link from "next/link";
+
+const { Meta } = Card;
 
 const Posts = () => {
   const [posts, setPosts] = useState(null);
@@ -28,12 +31,29 @@ const Posts = () => {
   return (
     <>
       <Row gutter={12}>
-        <Col sm={24} lg={16}>
-          <pre>{JSON.stringify(posts, null, 4)}</pre>
-        </Col>
-        <Col sm={24} lg={8}>
-          Sidebar
-        </Col>
+        {posts &&
+          posts.map((post) => (
+            <Col
+              xs={24}
+              xl={8}
+              style={{ marginTop: 5, marginBottom: 5 }}
+              key={post.id}>
+              <Link href={`/post/${post.slug}`}>
+                <Card
+                  hoverable
+                  cover={
+                    <Avatar
+                      shape='square'
+                      style={{ height: "200px" }}
+                      src={post.featuredImage?.url || "/images/default.jpeg"}
+                      alt={post.title}
+                    />
+                  }>
+                  <Meta title={post.title} />
+                </Card>
+              </Link>
+            </Col>
+          ))}
       </Row>
     </>
   );

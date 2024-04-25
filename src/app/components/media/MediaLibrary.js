@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/auth";
 import { CloseCircleOutlined, InboxOutlined } from "@ant-design/icons";
 import { MediaContext } from "../../context/media";
+import { toast } from "react-hot-toast";
 
 const { Dragger } = Upload;
 
@@ -63,6 +64,7 @@ const MediaLibrary = () => {
           images: media.images.filter((image) => image._id !== imageId),
           selected: null,
         });
+        toast.error("Image deleted successfully");
       }
     } catch (err) {
       console.log(err);
@@ -81,29 +83,31 @@ const MediaLibrary = () => {
       </Dragger>
 
       <div style={{ textAlign: "center" }}>
-        {media?.images?.map((image) => (
-          <Badge>
-            <Image
-              onClick={() => setMedia({ ...media, selected: image })}
-              preview={showPreview}
-              src={image.url}
-              style={{
-                paddingTop: 5,
-                paddingRight: 10,
-                height: "100px",
-                width: "100px",
-                objectFit: "cover",
-                cursor: "pointer",
-              }}
-            />
-            <br />
-            <br />
-            <CloseCircleOutlined
-              onClick={() => handleImageDelete(image._id)}
-              style={{ marginTop: "5px", color: "#f5222d" }}
-            />
-          </Badge>
-        ))}
+        {media?.images?.map((image) =>
+          image ? (
+            <Badge key={image._id}>
+              <Image
+                onClick={() => setMedia({ ...media, selected: image })}
+                preview={showPreview}
+                src={image.url}
+                style={{
+                  paddingTop: 5,
+                  paddingRight: 10,
+                  height: "100px",
+                  width: "100px",
+                  objectFit: "cover",
+                  cursor: "pointer",
+                }}
+              />
+              <br />
+              <br />
+              <CloseCircleOutlined
+                onClick={() => handleImageDelete(image._id)}
+                style={{ marginTop: "5px", color: "#f5222d" }}
+              />
+            </Badge>
+          ) : null
+        )}
       </div>
     </>
   );

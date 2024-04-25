@@ -7,12 +7,15 @@ import Link from "next/link";
 import { PlusOutlined } from "@ant-design/icons";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { PostContext } from "../../../context/PostContext";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 function Posts() {
   const [post, setPost] = useContext(PostContext);
   const { posts } = post;
   const { theme } = useContext(ThemeContext);
+
+  const router = useRouter();
 
   useEffect(() => {
     fetchPosts();
@@ -29,10 +32,23 @@ function Posts() {
 
   const handleEdit = async (post) => {
     console.log("EDIT POST", post);
+    return router.push(`/pages/posts/${post.slug}`);
   };
 
   const handleDelete = async (post) => {
-    console.log("DELETE POST", post);
+    try {
+      const answer = window.confirm("Are you sure you want to delete?");
+      if (!answer) return;
+      const { data } = await axios.delete(`/post/${post._id}`);
+      if (data.ok) {
+        setPost((prev) => ({
+          ...prev,
+          posts: prev.posts.filter((p) => p._id !== post._id),
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const buttonStyle = {
