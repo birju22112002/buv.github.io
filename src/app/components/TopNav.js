@@ -40,9 +40,9 @@ const TopNav = () => {
     if (auth?.user?.role === "Admin") {
       return "/pages/admin";
     } else if (auth?.user?.role === "Author") {
-      return "/author";
+      return "/pages/author";
     } else {
-      return "/subscriber";
+      return "/pages/subscriber";
     }
   };
 
@@ -58,8 +58,8 @@ const TopNav = () => {
         <Link href='/'>BUV</Link>
       </Menu.Item>
 
-      <Menu.Item key='posts1' icon={<DatabaseOutlined />}>
-        <Link href='/pages/posts1'>Posts</Link>
+      <Menu.Item key='posts' icon={<DatabaseOutlined />}>
+        <Link href='/pages/posts'>Posts</Link>
       </Menu.Item>
 
       {auth?.user === null && (

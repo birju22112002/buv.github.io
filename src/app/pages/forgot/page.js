@@ -5,7 +5,7 @@ import { Form, Input, Button, Col, Row } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import axios from "axios";
-import { ThemeContext } from "../../context/theme";
+import { ThemeContext } from "../../context/ThemeContext";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/auth";
 import { useRouter } from "next/navigation";

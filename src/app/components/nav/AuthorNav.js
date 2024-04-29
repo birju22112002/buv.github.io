@@ -18,7 +18,7 @@ import {
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
-const AdminNav = () => {
+const AuthorNav = () => {
   const { theme } = useContext(ThemeContext);
 
   const [collapsed, setCollapsed] = useState(false);
@@ -63,8 +63,8 @@ const AdminNav = () => {
         onClick={handleClick}>
         <Menu.Item key='1' icon={<SettingOutlined />}>
           <Link
-            href='/pages/admin'
-            className={current === "/pages/admin" ? "active" : null}>
+            href='/pages/author'
+            className={current === "/pages/author" ? "active" : null}>
             Dashboard
           </Link>
         </Menu.Item>
@@ -73,25 +73,25 @@ const AdminNav = () => {
         <SubMenu key='2' icon={<PushpinOutlined />} title='Posts'>
           <Menu.Item key='3'>
             <Link
-              href='/pages/admin/posts/post'
+              href='/pages/author/posts/post'
               className={
-                current === "/pages/admin/posts/post" ? "active" : null
+                current === "/pages/author/posts/post" ? "active" : null
               }>
               All Posts
             </Link>
           </Menu.Item>
           <Menu.Item key='4'>
             <Link
-              href='/pages/admin/posts'
-              className={current === "/pages/admin/posts" ? "active" : null}>
+              href='/pages/author/posts'
+              className={current === "/pages/author/posts" ? "active" : null}>
               Add New
             </Link>
           </Menu.Item>
           <Menu.Item key='5'>
             <Link
-              href='/pages/admin/categories'
+              href='/pages/author/categories'
               className={
-                current === "/pages/admin/categories" ? "active" : null
+                current === "/pages/author/categories" ? "active" : null
               }>
               Categories
             </Link>
@@ -102,17 +102,17 @@ const AdminNav = () => {
         <SubMenu key='6' icon={<CameraOutlined />} title='Media'>
           <Menu.Item key='7'>
             <Link
-              href='/pages/admin/media/library'
+              href='/pages/auhtor/media/library'
               className={
-                current === "/pages/admin/media/library" ? "active" : null
+                current === "/pages/author/media/library" ? "active" : null
               }>
               Library
             </Link>
           </Menu.Item>
           <Menu.Item key='8'>
             <Link
-              href='/pages/admin/media'
-              className={current === "/pages/admin/media" ? "active" : null}>
+              href='/pages/author/media'
+              className={current === "/pages/author/media" ? "active" : null}>
               Add New
             </Link>
           </Menu.Item>
@@ -121,45 +121,18 @@ const AdminNav = () => {
         {/* comments */}
         <Menu.Item key='9' icon={<CommentOutlined />}>
           <Link
-            href='/pages/admin/comments'
-            className={current === "/pages/admin/comments" ? "active" : null}>
+            href='/pages/author/comments'
+            className={current === "/pages/author/comments" ? "active" : null}>
             Comments
           </Link>
         </Menu.Item>
 
-        {/* users */}
-        <SubMenu key='10' icon={<UserSwitchOutlined />} title='Users'>
-          <Menu.Item key='11'>
-            <Link
-              href='/pages/admin/users'
-              className={current === "/pages/admin/users" ? "active" : null}>
-              All Users
-            </Link>
-          </Menu.Item>
-          <Menu.Item key='12'>
-            <Link
-              href='/pages/admin/users'
-              className={current === "/pages/admin/users" ? "active" : null}>
-              Add New
-            </Link>
-          </Menu.Item>
-        </SubMenu>
-
         {/* profile */}
         <Menu.Item key='13' icon={<UserOutlined />}>
           <Link
-            href='/admin/userid'
-            className={current === "/admin/userid" ? "active" : null}>
+            href='/author/userid'
+            className={current === "/author/userid" ? "active" : null}>
             Profile
-          </Link>
-        </Menu.Item>
-
-        {/* Customize */}
-        <Menu.Item key='14' icon={<BgColorsOutlined />}>
-          <Link
-            href='/admin/customize'
-            className={current === "/admin/customize" ? "active" : null}>
-            Customize
           </Link>
         </Menu.Item>
       </Menu>
@@ -167,4 +140,4 @@ const AdminNav = () => {
   );
 };
 
-export default AdminNav;
+export default AuthorNav;

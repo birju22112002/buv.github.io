@@ -1,203 +1,62 @@
 /** @format */
 "use client";
-import { useContext, useState, useEffect, useCallback } from "react";
-import { Layout, Row, Col, Input, Select, Modal, Button, Image } from "antd";
-import AdminLayout from "../../components/layouts/AdminLayout";
-import JoditEditor from "jodit-react";
-import { ThemeContext } from "../../context/ThemeContext";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { UploadOutlined } from "@ant-design/icons";
-import Media from "../../components/media/page";
-import { MediaContext } from "../../context/media";
+import { Row, Col, Card, Avatar } from "antd";
+import Link from "next/link";
 
-const { Option } = Select;
+const { Meta } = Card;
 
-function NewPost() {
-  const router = useRouter();
-  // load from local storage
-  const savedTitle = () => {
-    if (process.browser) {
-      if (localStorage.getItem("post-title")) {
-        return localStorage.getItem("post-title");
-      }
-    }
-  };
-
-  const savedContent = () => {
-    if (process.browser) {
-      if (localStorage.getItem("post-content")) {
-        return localStorage.getItem("post-content");
-      }
-    }
-  };
-
-  // context
-  const { theme, setTheme } = useContext(ThemeContext);
-  const [media, setMedia] = useContext(MediaContext);
-
-  // state
-  const [title, setTitle] = useState(savedTitle());
-  const [content, setContent] = useState(savedContent());
-  const [categories, setCategories] = useState([]);
-  const [loadedCategories, setLoadedCategories] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [visibleMedia, setVisibleMedia] = useState(false);
-  // hook
+const Posts = () => {
+  const [posts, setPosts] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
-    try {
-      const { data } = await axios.get("/categories");
-      setLoadedCategories(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handlePublish = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.post("/create-post", {
-        title,
-        content,
-        categories,
-        featuredImage: media?.selected?._id,
-      });
-      if (data?.error) {
-        toast.error(data?.error);
-        setLoading(false);
-      } else {
-        // console.log("POST PUBLISHED RES => ", data);
-        toast.success("Post created successfully");
-        localStorage.removeItem("post-title");
-        localStorage.removeItem("post-content");
-        setMedia({ ...media, selected: null });
-        router.push(`/pages/posts/post`);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/posts");
+        setPosts(response.data);
+      } catch (err) {
+        setError("Failed to fetch data");
       }
-    } catch (err) {
-      console.log(err);
-      toast.error("Post create failed. Try again.");
-      setLoading(false);
-    }
-  };
+    };
 
-  const handleContentChange = useCallback((newContent) => {
-    setContent(newContent);
-    localStorage.setItem("post-content", newContent);
+    fetchData();
   }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
-    <AdminLayout>
-      <Row>
-        <Col span={14} offset={1}>
-          <h1>Create new post</h1>
-          <Input
-            size='large'
-            value={title}
-            placeholder='Give your post a title'
-            onChange={(e) => {
-              setTitle(e.target.value);
-              localStorage.setItem(
-                "post-title",
-                JSON.stringify(e.target.value)
-              );
-            }}
-          />
-          <br />
-          <br />
-          <div className='editor-scroll'>
-            <JoditEditor
-              value={content}
-              onChange={handleContentChange}
-              config={{
-                uploader: {
-                  insertImageAsBase64URI: true,
-                  url: "/your-upload-endpoint",
-                  headers: {},
-                },
-              }}
-            />
-          </div>
-
-          <br />
-          <br />
-        </Col>
-
-        <Col span={6} offset={1}>
-          <Button
-            style={{ margin: "10px 0px 10px 0px", width: "100%" }}
-            onClick={() => setVisible(true)}>
-            Preview
-          </Button>
-
-          <Button
-            style={{ margin: "10px 0px 10px 0px", width: "100%" }}
-            onClick={() => setMedia({ ...media, showMediaModal: true })}>
-            <UploadOutlined /> Featured Image
-          </Button>
-
-          <h4>Categories</h4>
-
-          <Select
-            mode='multiple'
-            allowClear={true}
-            placeholder='Select categories'
-            style={{ width: "100%" }}
-            onChange={(v) => setCategories(v)}>
-            {loadedCategories.map((item) => (
-              <Option key={item.name}>{item.name}</Option>
-            ))}
-          </Select>
-
-          {media?.selected && (
-            <div style={{ marginTop: "15px" }}>
-              <Image width='100%' src={media?.selected?.url} />
-            </div>
-          )}
-
-          <Button
-            loading={loading}
-            style={{ margin: "10px 0px 10px 0px", width: "100%" }}
-            type='primary'
-            onClick={handlePublish}>
-            Publish
-          </Button>
-        </Col>
-
-        <Modal
-          title='Preview'
-          centered
-          visible={visible}
-          onOk={() => setVisible(false)}
-          onCancel={() => setVisible(false)}
-          width={720}
-          footer={null}>
-          <h1>{title}</h1>
-          <JoditEditor
-            value={content}
-            config={{
-              readOnly: true,
-            }}
-          />
-        </Modal>
-        <Modal
-          visible={media.showMediaModal}
-          title='Media'
-          onOk={() => setMedia({ ...media, showMediaModal: false })}
-          onCancel={() => setMedia({ ...media, showMediaModal: false })}
-          width={720}
-          footer={null}>
-          <Media />
-        </Modal>
+    <>
+      <Row gutter={12}>
+        {posts &&
+          posts.map((post) => (
+            <Col
+              xs={24}
+              xl={8}
+              style={{ marginTop: 5, marginBottom: 5 }}
+              key={post.id}>
+              <Link href={`/post/${post.slug}`}>
+                <Card
+                  hoverable
+                  cover={
+                    <Avatar
+                      shape='square'
+                      style={{ height: "200px" }}
+                      src={post.featuredImage?.url || "/images/default.jpeg"}
+                      alt={post.title}
+                    />
+                  }>
+                  <Meta title={post.title} />
+                </Card>
+              </Link>
+            </Col>
+          ))}
       </Row>
-    </AdminLayout>
+    </>
   );
-}
+};
 
-export default NewPost;
+export default Posts;
