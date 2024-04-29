@@ -8,9 +8,7 @@ import { useWindowWidth } from "@react-hook/window-size";
 import {
   PushpinOutlined,
   CameraOutlined,
-  UserSwitchOutlined,
   SettingOutlined,
-  BgColorsOutlined,
   UserOutlined,
   CommentOutlined,
 } from "@ant-design/icons";
@@ -18,7 +16,7 @@ import {
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
-const AuthorNav = () => {
+const SubscriberNav = () => {
   const { theme } = useContext(ThemeContext);
 
   const [collapsed, setCollapsed] = useState(false);
@@ -54,7 +52,6 @@ const AuthorNav = () => {
         style={{
           backgroundColor: theme === "dark" ? "#222222" : null,
         }}
-        // defaultSelectedKeys={["1"]}
         defaultOpenKeys={["2", "6", "10"]}
         selectedKeys={[current]}
         mode='inline'
@@ -63,66 +60,19 @@ const AuthorNav = () => {
         onClick={handleClick}>
         <Menu.Item key='1' icon={<SettingOutlined />}>
           <Link
-            href='/pages/author'
-            className={current === "/pages/author" ? "active" : null}>
+            href='/pages/subscriber'
+            className={current === "/pages/subscriber" ? "active" : null}>
             Dashboard
           </Link>
         </Menu.Item>
 
-        {/* posts */}
-        <SubMenu key='2' icon={<PushpinOutlined />} title='Posts'>
-          <Menu.Item key='3'>
-            <Link
-              href='/pages/author/posts/post'
-              className={
-                current === "/pages/author/posts/post" ? "active" : null
-              }>
-              All Posts
-            </Link>
-          </Menu.Item>
-          <Menu.Item key='4'>
-            <Link
-              href='/pages/author/posts'
-              className={current === "/pages/author/posts" ? "active" : null}>
-              Add New
-            </Link>
-          </Menu.Item>
-          <Menu.Item key='5'>
-            <Link
-              href='/pages/author/categories'
-              className={
-                current === "/pages/author/categories" ? "active" : null
-              }>
-              Categories
-            </Link>
-          </Menu.Item>
-        </SubMenu>
-
-        {/* library */}
-        <SubMenu key='6' icon={<CameraOutlined />} title='Media'>
-          <Menu.Item key='7'>
-            <Link
-              href='/pages/author/media/library'
-              className={
-                current === "/pages/author/media/library" ? "active" : null
-              }>
-              Library
-            </Link>
-          </Menu.Item>
-          <Menu.Item key='8'>
-            <Link
-              href='/pages/author/media'
-              className={current === "/pages/author/media" ? "active" : null}>
-              Add New
-            </Link>
-          </Menu.Item>
-        </SubMenu>
-
         {/* comments */}
         <Menu.Item key='9' icon={<CommentOutlined />}>
           <Link
-            href='/pages/author/comments'
-            className={current === "/pages/author/comments" ? "active" : null}>
+            href='/pages/subscriber/comments'
+            className={
+              current === "/pages/subscriber/comments" ? "active" : null
+            }>
             Comments
           </Link>
         </Menu.Item>
@@ -130,8 +80,10 @@ const AuthorNav = () => {
         {/* profile */}
         <Menu.Item key='13' icon={<UserOutlined />}>
           <Link
-            href='/author/userid'
-            className={current === "/author/userid" ? "active" : null}>
+            href='/pages/subscriber/profile'
+            className={
+              current === "/pages/subscriber/profile" ? "active" : null
+            }>
             Profile
           </Link>
         </Menu.Item>
@@ -140,4 +92,4 @@ const AuthorNav = () => {
   );
 };
 
-export default AuthorNav;
+export default SubscriberNav;

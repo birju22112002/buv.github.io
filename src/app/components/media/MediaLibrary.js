@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 
 const { Dragger } = Upload;
 
-const MediaLibrary = () => {
+const MediaLibrary = ({ page = "admin" }) => {
   // context
   const [auth] = useContext(AuthContext);
   const [media, setMedia] = useContext(MediaContext);
@@ -83,31 +83,38 @@ const MediaLibrary = () => {
       </Dragger>
 
       <div style={{ textAlign: "center" }}>
-        {media?.images?.map((image) =>
-          image ? (
-            <Badge key={image._id}>
-              <Image
-                onClick={() => setMedia({ ...media, selected: image })}
-                preview={showPreview}
-                src={image.url}
-                style={{
-                  paddingTop: 5,
-                  paddingRight: 10,
-                  height: "100px",
-                  width: "100px",
-                  objectFit: "cover",
-                  cursor: "pointer",
-                }}
-              />
-              <br />
-              <br />
+        {media?.images?.map((image) => (
+          <Badge>
+            <Image
+              onClick={() => setMedia({ ...media, selected: image })}
+              preview={showPreview}
+              src={image.url}
+              style={{
+                paddingTop: 5,
+                paddingRight: 10,
+                height: "100px",
+                width: "100px",
+                objectFit: "cover",
+                cursor: "pointer",
+              }}
+            />
+            <br />
+            <br />
+            {page === "author" && image?.postedBy?._id == auth?.user?._id ? (
               <CloseCircleOutlined
                 onClick={() => handleImageDelete(image._id)}
                 style={{ marginTop: "5px", color: "#f5222d" }}
               />
-            </Badge>
-          ) : null
-        )}
+            ) : page === "admin" ? (
+              <CloseCircleOutlined
+                onClick={() => handleImageDelete(image._id)}
+                style={{ marginTop: "5px", color: "#f5222d" }}
+              />
+            ) : (
+              ""
+            )}
+          </Badge>
+        ))}
       </div>
     </>
   );
