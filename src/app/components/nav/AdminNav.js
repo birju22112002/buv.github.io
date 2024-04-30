@@ -131,8 +131,10 @@ const AdminNav = () => {
         <SubMenu key='10' icon={<UserSwitchOutlined />} title='Users'>
           <Menu.Item key='11'>
             <Link
-              href='/pages/admin/users'
-              className={current === "/pages/admin/users" ? "active" : null}>
+              href='/pages/admin/users/user'
+              className={
+                current === "/pages/admin/users/user" ? "active" : null
+              }>
               All Users
             </Link>
           </Menu.Item>
@@ -148,8 +150,8 @@ const AdminNav = () => {
         {/* profile */}
         <Menu.Item key='13' icon={<UserOutlined />}>
           <Link
-            href='/admin/userid'
-            className={current === "/admin/userid" ? "active" : null}>
+            href='/admin/profile'
+            className={current === "/admin/profile" ? "active" : null}>
             Profile
           </Link>
         </Menu.Item>
