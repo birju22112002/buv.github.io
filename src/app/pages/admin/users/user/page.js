@@ -20,27 +20,37 @@ export default function AllUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    if (auth?.token) loadUsers();
+    if (auth?.token) {
+      fetchUsers(auth.token); // Call fetchUsers with the JWT token
+    }
   }, [auth?.token]);
 
-  const loadUsers = async (req, res) => {
+  const fetchUsers = async (token) => {
     try {
-      const { data } = await axios.get("users");
-      setUsers(data);
-    } catch (err) {
-      console.log(err);
+      const response = await axios.get("http://localhost:8000/api/users", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the JWT token in the Authorization header
+        },
+      });
+      setUsers(response.data); // Update users state with the fetched data
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      toast.error("Error fetching users");
     }
   };
 
   const handleDelete = async (user) => {
     try {
       if (user._id === auth.user._id) {
-        alert("you can not delete yourself");
+        alert("You cannot delete yourself");
         return;
       }
-      // Handle deletion logic here
+      const { data } = await axios.delete(`/users/${user._id}`);
+      setUsers((prev) => prev.filter((u) => u._id !== user._id));
+      toast.error("User deleted");
     } catch (err) {
       console.log(err);
+      toast.error("Error deleting user");
     }
   };
 
@@ -55,7 +65,7 @@ export default function AllUsers() {
             style={{
               color: theme === "dark" ? "#ffffff" : "#000000",
             }}>
-            All Users
+            All Users ({users?.length})
           </h4>
 
           <List

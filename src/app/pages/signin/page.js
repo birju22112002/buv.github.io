@@ -1,5 +1,6 @@
 /** @format */
 "use client";
+// Signin.js
 import React, { useState, useContext, useEffect } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
@@ -8,20 +9,19 @@ import axios from "axios";
 import { ThemeContext } from "../../context/ThemeContext";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/auth";
-import { useRouter } from "next/navigation";
-// import { headers } from "next/headers";
+import { useRouter } from "next/router";
 
 function Signin() {
   const [auth, setAuth] = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
+
   useEffect(() => {
     if (auth?.token) {
       router.push("/");
     }
-  }, [auth]);
+  }, [auth, router]);
 
   const onFinish = async (values) => {
     try {
@@ -34,21 +34,23 @@ function Signin() {
         toast.error(data.error);
         setLoading(false);
       } else {
-        // console.log("signin response => ", data);
-        // save user and token to context
+        // Save user and token to context
         setAuth(data);
-        // save user and token to local storage
+        // Save user and token to local storage
         localStorage.setItem("auth", JSON.stringify(data));
         toast.success("Successfully signed in");
-        // redirect user
+
+        // Include the token in the headers of subsequent requests
+        axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+
+        // Redirect user based on role
         if (data?.user?.role === "Admin") {
           router.push("/pages/admin");
         } else if (data?.user?.role === "Author") {
-          router.push("/author");
+          router.push("/pages/author");
         } else {
-          router.push("/subscriber");
+          router.push("/pages/subscriber");
         }
-        // form.resetFields();
       }
     } catch (err) {
       setLoading(false);
@@ -60,9 +62,7 @@ function Signin() {
     <Row>
       <Col span={8} offset={8}>
         <h1 style={{ paddingTop: "100px" }}>Signin</h1>
-
         <Form
-          form={form}
           name='normal_login'
           className='login-form'
           initialValues={{ remember: true }}
@@ -84,7 +84,6 @@ function Signin() {
               placeholder='Password'
             />
           </Form.Item>
-
           <Link
             href='/pages/forgot'
             style={{
@@ -95,7 +94,6 @@ function Signin() {
           </Link>
           <br />
           <br />
-
           <Form.Item>
             <Button
               type='primary'
