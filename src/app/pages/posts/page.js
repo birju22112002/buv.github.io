@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Row, Col, Card, Avatar } from "antd";
+import Head from "next/head";
 import Link from "next/link";
 
 const { Meta } = Card;
@@ -12,16 +13,16 @@ const Posts = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPosts = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/posts");
         setPosts(response.data);
-      } catch (err) {
-        setError("Failed to fetch data");
+      } catch (error) {
+        setError("Failed to fetch posts");
       }
     };
 
-    fetchData();
+    fetchPosts();
   }, []);
 
   if (error) {
@@ -30,6 +31,10 @@ const Posts = () => {
 
   return (
     <>
+      <Head>
+        <title>Recent blog Posts</title>
+        <meta description='Blog posts about web development, programing etc' />
+      </Head>
       <Row gutter={12}>
         {posts &&
           posts.map((post) => (
@@ -38,7 +43,7 @@ const Posts = () => {
               xl={8}
               style={{ marginTop: 5, marginBottom: 5 }}
               key={post.id}>
-              <Link href={`/post/${post.slug}`}>
+              <Link href={`/pages/posts/${post.slug}`}>
                 <Card
                   hoverable
                   cover={

@@ -1,6 +1,6 @@
 /** @format */
 
-import { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Layout, Row, Col, Input, Select, Modal, Button, Image } from "antd";
 import JoditEditor from "jodit-react";
 import { ThemeContext } from "../../context/ThemeContext";
@@ -41,6 +41,7 @@ function NewPostComponent({ page = "admin" }) {
   const [loadedCategories, setLoadedCategories] = useState([]);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [featuredImage, setFeaturedImage] = useState(null);
   // hook
   const router = useRouter();
 
@@ -64,17 +65,16 @@ function NewPostComponent({ page = "admin" }) {
         title,
         content,
         categories,
-        featuredImage: media?.selected?._id,
+        featuredImage: media?.selected ? media.selected._id : null,
       });
       if (data?.error) {
         toast.error(data?.error);
         setLoading(false);
       } else {
-        // console.log("POST PUBLISHED RES => ", data);
         toast.success("Post created successfully");
         localStorage.removeItem("post-title");
         localStorage.removeItem("post-content");
-        setMedia({ ...media, selected: null });
+        setFeaturedImage(null);
         router.push(`/pages/${page}/posts/post`);
       }
     } catch (err) {
@@ -140,7 +140,6 @@ function NewPostComponent({ page = "admin" }) {
             <Option key={item.name}>{item.name}</Option>
           ))}
         </Select>
-
         {media?.selected && (
           <div style={{ marginTop: "15px" }}>
             <Image width='100%' src={media?.selected?.url} />

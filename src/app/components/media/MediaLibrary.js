@@ -83,38 +83,38 @@ const MediaLibrary = ({ page = "admin" }) => {
       </Dragger>
 
       <div style={{ textAlign: "center" }}>
-        {media?.images?.map((image) => (
-          <Badge>
-            <Image
-              onClick={() => setMedia({ ...media, selected: image })}
-              preview={showPreview}
-              src={image.url}
-              style={{
-                paddingTop: 5,
-                paddingRight: 10,
-                height: "100px",
-                width: "100px",
-                objectFit: "cover",
-                cursor: "pointer",
-              }}
-            />
-            <br />
-            <br />
-            {page === "author" && image?.postedBy?._id == auth?.user?._id ? (
-              <CloseCircleOutlined
-                onClick={() => handleImageDelete(image._id)}
-                style={{ marginTop: "5px", color: "#f5222d" }}
-              />
-            ) : page === "admin" ? (
-              <CloseCircleOutlined
-                onClick={() => handleImageDelete(image._id)}
-                style={{ marginTop: "5px", color: "#f5222d" }}
-              />
-            ) : (
-              ""
-            )}
-          </Badge>
-        ))}
+        {media?.images?.map(
+          (image) =>
+            image && (
+              <Badge key={image._id}>
+                <Image
+                  onClick={() => setMedia({ ...media, selected: image })}
+                  preview={showPreview}
+                  src={image.url}
+                  style={{
+                    paddingTop: 5,
+                    paddingRight: 10,
+                    height: "100px",
+                    width: "100px",
+                    objectFit: "cover",
+                    cursor: "pointer",
+                  }}
+                />
+                <br />
+                <br />
+                {(page === "author" || page === "admin") && (
+                  <CloseCircleOutlined
+                    onClick={() => handleImageDelete(image._id)}
+                    style={{
+                      marginTop: "5px",
+                      color: "#f5222d",
+                      cursor: "pointer",
+                    }}
+                  />
+                )}
+              </Badge>
+            )
+        )}
       </div>
     </>
   );

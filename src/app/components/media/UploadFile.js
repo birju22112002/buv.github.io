@@ -20,14 +20,16 @@ const UploadFile = ({ redirectToLibrary = false, page = "admin" }) => {
       Authorization: `Bearer ${auth.token}`,
     },
     onChange(info) {
+      console.log("Upload info:", info);
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
       if (info.file.status === "done") {
         message.success(`${info.file.name} file uploaded successfully`);
+
         setMedia({
-          images: [...media.images, info.file.response],
-          selected: info.file.response,
+          images: [...media.images, info.file.response.data],
+          selected: info.file.response.data,
           showMediaModal: false,
         });
         if (redirectToLibrary) {

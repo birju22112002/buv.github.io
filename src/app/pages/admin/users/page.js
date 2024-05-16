@@ -1,141 +1,112 @@
 /** @format */
-
 "use client";
-import { useState, useContext } from "react";
-import AdminLayout from "../../../components/layouts/AdminLayout";
-import { Row, Col, Button, Input, Checkbox, Select } from "antd";
-import { ThemeContext } from "../../../context/ThemeContext";
-import axios from "axios";
-import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import generator from "generate-password";
+import { useState, useEffect, useContext } from "react";
+import AdminLayout from "../../../components/layouts/AdminLayout";
+import { Row, Col, List, Avatar, Input } from "antd";
+import axios from "axios";
+import toast from "react-hot-toast";
+import Link from "next/link";
+import { AuthContext } from "../../../context/auth";
 
-const NewUser = () => {
-  // state
-  const { theme } = useContext(ThemeContext);
+const AllUsers = () => {
+  const [auth, setAuth] = useContext(AuthContext);
+  const router = useRouter();
+  const [keyword, setKeyword] = useState("");
+  const [users, setUsers] = useState([]);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [website, setWebsite] = useState("");
-  const [password, setPassword] = useState(generator.generate({ length: 6 }));
-  const [role, setRole] = useState("");
-  const [checked, setChecked] = useState(false);
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
-  // function
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const loadUsers = async () => {
     try {
-      setLoading(true);
-      // console.table({ name, email, website, password, role, checked });
-      const { data } = await axios.post("/create-user", {
-        email,
-        name,
-        website,
-        password,
-        role,
-        checked,
-      });
-      if (data.error) {
-        toast.error(data.error);
-        setLoading(false);
-      } else {
-        toast.success("User created successfully");
-        setLoading(false);
-      }
+      const { data } = await axios.get("/users");
+      setUsers(data);
     } catch (err) {
       console.log(err);
-      toast.error("Signup failed. Try again.");
-      setLoading(false);
+      toast.error("Failed to load users.");
     }
   };
 
-  // show form
+  const handleEdit = (userId) => {
+    router.push(`/admin/users/user/${userId}`);
+  };
+
+  const handleDelete = async (item) => {
+    if (item._id === auth.user._id) {
+      alert("You cannot delete yourself");
+      return;
+    }
+    try {
+      const { data } = await axios.delete(`/users/${item._id}`);
+      if (data?.error) {
+        toast.error(data.error);
+      } else {
+        console.log("User deleted:", data);
+        setUsers((previousUsers) =>
+          previousUsers.filter((user) => user._id !== item._id)
+        );
+        toast.success("User deleted successfully");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to delete user. Please try again.");
+    }
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(keyword)
+  );
+
   return (
     <AdminLayout>
       <Row>
-        <Col span={12} offset={6}>
-          <h4
-            style={{
-              marginBottom: "-10px",
-              color: theme === "dark" ? "#fff" : "#000",
-            }}>
-            Add new user
-          </h4>
-          <Input
-            style={{ margin: "20px 0px 10px 0px" }}
-            size='large'
-            placeholder='Full name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            style={{ margin: "10px 0px 10px 0px" }}
-            size='large'
-            placeholder='Email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            style={{ margin: "10px 0px 10px 0px" }}
-            size='large'
-            placeholder='Website'
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
-          <div style={{ display: "flex" }}>
-            <Button
-              onClick={() => setPassword(generator.generate({ length: 6 }))}
-              type='default'
-              size='large'
-              style={{
-                margin: "10px 0px 10px 0px",
-                color: theme === "dark" ? "#fff" : "#000",
-                backgroundColor: theme === "dark" ? "#333" : "#f0f0f0",
-              }}>
-              Generate password
-            </Button>
-            <Input.Password
-              style={{ margin: "10px 0px 10px 0px" }}
-              size='large'
-              placeholder='Password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+        <Col span={24}>
+          <h4 style={{ marginBottom: "-10px" }}>All users</h4>
+          <br />
 
-          <Select
-            defaultValue='Subscriber'
-            style={{ margin: "10px 0px 10px 0px", width: "100%" }}
-            onChange={(e) => setRole(e)}>
-            <Select.Option value='Subscriber'>Subscriber</Select.Option>
-            <Select.Option value='Author'>Author</Select.Option>
-            <Select.Option value='Admin'>Admin</Select.Option>
-          </Select>
+          <Input
+            placeholder='Search'
+            type='search'
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value.toLowerCase())}
+          />
 
-          <Checkbox
-            style={{ color: theme === "dark" ? "#fff" : "#000" }}
-            checked={checked}
-            onChange={(e) => setChecked(e.target.checked)}>
-            Send the new user an email about their account.
-          </Checkbox>
-
-          <Button
-            onClick={handleSubmit}
-            type='default'
-            style={{
-              margin: "10px 0px 10px 0px",
-              color: theme === "dark" ? "#fff" : "#000",
-              backgroundColor: theme === "dark" ? "#333" : "#f0f0f0",
-            }}
-            loading={loading}
-            block>
-            Submit
-          </Button>
+          <List
+            itemLayout='horizontal'
+            dataSource={filteredUsers}
+            renderItem={(item) => (
+              <List.Item
+                actions={[
+                  <a onClick={() => handleEdit(item._id)}>edit</a>,
+                  <a
+                    onClick={() => handleDelete(item)}
+                    disabled={item._id === auth.user._id}>
+                    delete
+                  </a>,
+                ]}>
+                <Avatar src={item.image?.url}>{item.name[0]}</Avatar>
+                <List.Item.Meta title={item.name} style={{ marginLeft: 10 }} />
+                <List.Item.Meta
+                  description={item.email}
+                  style={{ marginLeft: 10 }}
+                />
+                <List.Item.Meta
+                  description={item.role}
+                  style={{ marginLeft: 10 }}
+                />
+                <List.Item.Meta
+                  description={`${item.posts.length} post`}
+                  style={{ marginLeft: 10 }}
+                />
+              </List.Item>
+            )}
+          />
         </Col>
       </Row>
     </AdminLayout>
   );
 };
 
-export default NewUser;
+export default AllUsers;

@@ -9,7 +9,7 @@ import axios from "axios";
 import { ThemeContext } from "../../context/ThemeContext";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/auth";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function Signin() {
   const [auth, setAuth] = useContext(AuthContext);

@@ -1,69 +1,67 @@
 /** @format */
-"use client";
-import { useContext, useState, useEffect } from "react";
-import { Row, Col, Input, Select, Modal, Button, Image } from "antd";
+
+import React, { useState, useEffect, useContext } from "react";
+import { Layout, Row, Col, Input, Select, Modal, Button, Image } from "antd";
 import JoditEditor from "jodit-react";
 import { ThemeContext } from "../../context/ThemeContext";
 import axios from "axios";
-import { uploadImage } from "../../functions/upload";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { UploadOutlined } from "@ant-design/icons";
-import Media from "../media";
+import Media from "../media/page";
 import { MediaContext } from "../../context/media";
 
 const { Option } = Select;
 
-function EditPost({ page = "admin" }) {
-  // context
+function EditPostComponent({ page = "admin" }) {
   const { theme, setTheme } = useContext(ThemeContext);
   const [media, setMedia] = useContext(MediaContext);
-  // state
-  const [postId, setPostId] = useState("");
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [categories, setCategories] = useState([]); // post's existing categories
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [loadedCategories, setLoadedCategories] = useState([]);
-  const [featuredImage, setFeaturedImage] = useState({});
   const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
-  // media Modal
-  // const [visibleMedia, setVisibleMedia] = useState(false);
-  // hook
+  const [loading, setLoading] = useState(false);
+  const [featuredImage, setFeaturedImage] = useState(null);
+  const [postId, setPostId] = useState(null);
+
   const router = useRouter();
 
   useEffect(() => {
-    loadPost();
-  }, [router?.query?.slug]);
-
-  useEffect(() => {
-    loadCategories();
+    const slug = getSlugFromUrl();
+    if (slug) {
+      loadPostAndCategories(slug);
+    }
   }, []);
 
-  const loadPost = async () => {
-    try {
-      const { data } = await axios.get(`/post/${router.query.slug}`);
-      console.log("GOT POST FOR EDIT", data);
-      setTitle(data.title);
-      setContent(data.content);
-      setFeaturedImage(data.featuredImage);
-      setPostId(data._id);
-      // push category names
-      let arr = [];
-      data.categories.map((c) => arr.push(c.name));
-      setCategories(arr);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
+  const getSlugFromUrl = () => {
+    const pathArray = window.location.pathname.split("/");
+    return pathArray[pathArray.length - 1];
   };
 
-  const loadCategories = async () => {
+  const loadPostAndCategories = async (slug) => {
     try {
-      const { data } = await axios.get("/categories");
-      setLoadedCategories(data);
+      const [postData, categoriesData] = await Promise.all([
+        axios.get(`/post/${slug}`),
+        axios.get("/categories"),
+      ]);
+      if (postData.data) {
+        const { title, content, categories, featuredImage, _id } =
+          postData.data;
+        setTitle(title);
+        setContent(content);
+        setLoadedCategories(categoriesData.data);
+        setSelectedCategories(categories.map((cat) => cat._id));
+        setFeaturedImage(featuredImage);
+        setPostId(_id);
+      } else {
+        toast.error("No post data found");
+        router.push(`/pages/${page}/posts`);
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching post data:", err);
+      toast.error("Error fetching post data");
     }
   };
 
@@ -73,25 +71,27 @@ function EditPost({ page = "admin" }) {
       const { data } = await axios.put(`/edit-post/${postId}`, {
         title,
         content,
-        categories,
+        categories: selectedCategories,
         featuredImage: media?.selected?._id
-          ? media?.selected?._id
-          : featuredImage?._id
-          ? featuredImage._id
-          : undefined,
+          ? media.selected._id
+          : featuredImage?._id,
+        publish: true,
       });
       if (data?.error) {
-        toast.error(data?.error);
-        setLoading(false);
+        toast.error(data.error);
       } else {
-        // console.log("POST PUBLISHED RES => ", data);
         toast.success("Post updated successfully");
-        setMedia({ ...media, selected: null });
-        router.push(`/${page}/posts`);
+
+        if (data.published) {
+          router.push(`/pages/${page}/posts/post`);
+        } else {
+          router.push(`/`);
+        }
       }
     } catch (err) {
-      console.log(err);
-      toast.error("Post create failed. Try again.");
+      console.error("Error updating post:", err);
+      toast.error("An error occurred. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
@@ -99,35 +99,26 @@ function EditPost({ page = "admin" }) {
   return (
     <Row>
       <Col span={14} offset={1}>
-        <h1>Edit post</h1>
+        <h1>EDIT post</h1>
         <Input
           size='large'
           value={title}
           placeholder='Give your post a title'
-          onChange={(e) => {
-            setTitle(e.target.value);
-            localStorage.setItem("post-title", JSON.stringify(e.target.value));
-          }}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <br />
         <br />
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <div className='editor-scroll'>
-            <JoditEditor
-              value={content}
-              onChange={(newContent) => {
-                setContent(newContent);
-              }}
-            />
-          </div>
-        )}
+        <div className='editor-scroll'>
+          <JoditEditor
+            value={content}
+            tabIndex={1}
+            onBlur={(newContent) => setContent(newContent)}
+            onChange={(newContent) => {}}
+          />
+        </div>
 
         <br />
         <br />
-
-        {/* <pre>{JSON.stringify(loadedCategories, null, 4)}</pre> */}
       </Col>
 
       <Col span={6} offset={1}>
@@ -144,16 +135,17 @@ function EditPost({ page = "admin" }) {
         </Button>
 
         <h4>Categories</h4>
-
         <Select
           mode='multiple'
           allowClear={true}
           placeholder='Select categories'
           style={{ width: "100%" }}
-          onChange={(v) => setCategories(v)}
-          value={[...categories]}>
+          onChange={(v) => setSelectedCategories(v)}
+          value={selectedCategories}>
           {loadedCategories.map((item) => (
-            <Option key={item.name}>{item.name}</Option>
+            <Option key={item._id} value={item._id}>
+              {item.name}
+            </Option>
           ))}
         </Select>
 
@@ -165,9 +157,7 @@ function EditPost({ page = "admin" }) {
           <div style={{ marginTop: "15px" }}>
             <Image width='100%' src={featuredImage?.url} />
           </div>
-        ) : (
-          ""
-        )}
+        ) : null}
 
         <Button
           loading={loading}
@@ -177,7 +167,7 @@ function EditPost({ page = "admin" }) {
           Publish
         </Button>
       </Col>
-      {/* preview modal */}
+
       <Modal
         title='Preview'
         centered
@@ -187,9 +177,9 @@ function EditPost({ page = "admin" }) {
         width={720}
         footer={null}>
         <h1>{title}</h1>
-        <JoditEditor value={content} readOnly={true} />
+        <div dangerouslySetInnerHTML={{ __html: content }} />
       </Modal>
-      {/* media modal */}
+
       <Modal
         visible={media.showMediaModal}
         title='Media'
@@ -203,4 +193,4 @@ function EditPost({ page = "admin" }) {
   );
 }
 
-export default EditPost;
+export default EditPostComponent;

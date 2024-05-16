@@ -4,6 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Menu, Layout } from "antd";
 import Link from "next/link";
 import { ThemeContext } from "../../context/ThemeContext";
+import { AuthContext } from "../../context/auth";
 import { useWindowWidth } from "@react-hook/window-size";
 import {
   PushpinOutlined,
@@ -20,6 +21,8 @@ const { Sider } = Layout;
 
 const AdminNav = () => {
   const { theme } = useContext(ThemeContext);
+
+  const [auth, setAuth] = useContext(AuthContext);
 
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState("");
@@ -131,17 +134,17 @@ const AdminNav = () => {
         <SubMenu key='10' icon={<UserSwitchOutlined />} title='Users'>
           <Menu.Item key='11'>
             <Link
-              href='/pages/admin/users/user'
-              className={
-                current === "/pages/admin/users/user" ? "active" : null
-              }>
+              href='pages/admin/users'
+              className={current === "pages/admin/users" ? "active" : null}>
               All Users
             </Link>
           </Menu.Item>
           <Menu.Item key='12'>
             <Link
-              href='/pages/admin/users'
-              className={current === "/pages/admin/users" ? "active" : null}>
+              href='/pages/admin/users/user'
+              className={
+                current === "/pages/admin/users/user" ? "active" : null
+              }>
               Add New
             </Link>
           </Menu.Item>
@@ -150,8 +153,13 @@ const AdminNav = () => {
         {/* profile */}
         <Menu.Item key='13' icon={<UserOutlined />}>
           <Link
-            href='/admin/profile'
-            className={current === "/admin/profile" ? "active" : null}>
+            href={{
+              pathname: `/pages/admin/${auth.user?._id}`,
+              query: { routename: "update-user" },
+            }}
+            className={
+              current === `/pages/admin/${auth.user?._id}` ? "active" : null
+            }>
             Profile
           </Link>
         </Menu.Item>
@@ -159,8 +167,8 @@ const AdminNav = () => {
         {/* Customize */}
         <Menu.Item key='14' icon={<BgColorsOutlined />}>
           <Link
-            href='/admin/customize'
-            className={current === "/admin/customize" ? "active" : null}>
+            href='/pages/admin/customize'
+            className={current === "/pages/admin/customize" ? "active" : null}>
             Customize
           </Link>
         </Menu.Item>

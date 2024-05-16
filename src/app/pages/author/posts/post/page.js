@@ -33,7 +33,7 @@ function Posts() {
   };
 
   const handleEdit = async (post) => {
-    router.push(`/pages/author/posts/${post._id}`);
+    router.push(`/pages/author/posts/post/${post.slug}`);
   };
 
   const handleDelete = async (post) => {
