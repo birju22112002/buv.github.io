@@ -30,7 +30,7 @@ const AllUsers = () => {
   };
 
   const handleEdit = (userId) => {
-    router.push(`/admin/users/user/${userId}`);
+    router.push(`/pages/admin/users/user/${userId}`);
   };
 
   const handleDelete = async (item) => {
