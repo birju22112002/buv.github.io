@@ -9,7 +9,7 @@ import Link from "next/link";
 const { Meta } = Card;
 
 const Posts = () => {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]); // Initialize with an empty array
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -36,29 +36,28 @@ const Posts = () => {
         <meta description='Blog posts about web development, programing etc' />
       </Head>
       <Row gutter={12}>
-        {posts &&
-          posts.map((post) => (
-            <Col
-              xs={24}
-              xl={8}
-              style={{ marginTop: 5, marginBottom: 5 }}
-              key={post.id}>
-              <Link href={`/pages/posts/${post.slug}`}>
-                <Card
-                  hoverable
-                  cover={
-                    <Avatar
-                      shape='square'
-                      style={{ height: "200px" }}
-                      src={post.featuredImage?.url || "/images/default.jpeg"}
-                      alt={post.title}
-                    />
-                  }>
-                  <Meta title={post.title} />
-                </Card>
-              </Link>
-            </Col>
-          ))}
+        {posts.map((post) => (
+          <Col
+            xs={24}
+            xl={8}
+            style={{ marginTop: 5, marginBottom: 5 }}
+            key={post.id}>
+            <Link href={`/pages/posts/${post.slug}`}>
+              <Card
+                hoverable
+                cover={
+                  <Avatar
+                    shape='square'
+                    style={{ height: "200px" }}
+                    src={post.featuredImage?.url || "/images/default.jpeg"}
+                    alt={post.title}
+                  />
+                }>
+                <Meta title={post.title} />
+              </Card>
+            </Link>
+          </Col>
+        ))}
       </Row>
     </>
   );

@@ -1,11 +1,11 @@
 /** @format */
-"use client";
+
 import SubscriberLayout from "../../components/layouts/SubscriberLayout";
 
 function Subscriber() {
   return (
     <SubscriberLayout>
-      <h1>Comments</h1>
+      <h1>This is subscriber page</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius vitae
         veritatis veniam itaque eaque doloremque molestias tenetur fugit quasi

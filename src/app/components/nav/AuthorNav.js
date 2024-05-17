@@ -4,6 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Menu, Layout } from "antd";
 import Link from "next/link";
 import { ThemeContext } from "../../context/ThemeContext";
+import { AuthContext } from "../../context/auth";
 import { useWindowWidth } from "@react-hook/window-size";
 import {
   PushpinOutlined,
@@ -20,6 +21,7 @@ const { Sider } = Layout;
 
 const AuthorNav = () => {
   const { theme } = useContext(ThemeContext);
+  const [auth, setAuth] = useContext(AuthContext);
 
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState("");
@@ -130,8 +132,15 @@ const AuthorNav = () => {
         {/* profile */}
         <Menu.Item key='13' icon={<UserOutlined />}>
           <Link
-            href='/author/userid'
-            className={current === "/author/userid" ? "active" : null}>
+            href={{
+              pathname: `/pages/author/profile/${auth.user?._id}`,
+              query: { routename: "update-user" },
+            }}
+            className={
+              current === `/pages/author/profile/${auth.user?._id}`
+                ? "active"
+                : null
+            }>
             Profile
           </Link>
         </Menu.Item>

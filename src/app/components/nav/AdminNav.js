@@ -154,11 +154,13 @@ const AdminNav = () => {
         <Menu.Item key='13' icon={<UserOutlined />}>
           <Link
             href={{
-              pathname: `/pages/admin/${auth.user?._id}`,
+              pathname: `/pages/admin/profile/${auth.user?._id}`,
               query: { routename: "update-user" },
             }}
             className={
-              current === `/pages/admin/${auth.user?._id}` ? "active" : null
+              current === `/pages/admin/profile/${auth.user?._id}`
+                ? "active"
+                : null
             }>
             Profile
           </Link>

@@ -1,5 +1,5 @@
 /** @format */
-"use client";
+
 import SubscriberLayout from "../../../components/layouts/SubscriberLayout";
 
 function Comments() {

@@ -4,6 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Menu, Layout } from "antd";
 import Link from "next/link";
 import { ThemeContext } from "../../context/ThemeContext";
+import { AuthContext } from "../../context/auth";
 import { useWindowWidth } from "@react-hook/window-size";
 import {
   PushpinOutlined,
@@ -18,6 +19,7 @@ const { Sider } = Layout;
 
 const SubscriberNav = () => {
   const { theme } = useContext(ThemeContext);
+  const [auth, setAuth] = useContext(AuthContext);
 
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState("");
@@ -52,6 +54,7 @@ const SubscriberNav = () => {
         style={{
           backgroundColor: theme === "dark" ? "#222222" : null,
         }}
+        // defaultSelectedKeys={["1"]}
         defaultOpenKeys={["2", "6", "10"]}
         selectedKeys={[current]}
         mode='inline'
@@ -80,9 +83,14 @@ const SubscriberNav = () => {
         {/* profile */}
         <Menu.Item key='13' icon={<UserOutlined />}>
           <Link
-            href='/pages/subscriber/profile'
+            href={{
+              pathname: `/pages/subscriber/profile/${auth.user?._id}`,
+              query: { routename: "update-user" },
+            }}
             className={
-              current === "/pages/subscriber/profile" ? "active" : null
+              current === `/pages/subscriber/profile/${auth.user?._id}`
+                ? "active"
+                : null
             }>
             Profile
           </Link>

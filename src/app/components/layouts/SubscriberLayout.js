@@ -2,13 +2,13 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
-import SubscriberNav from "../nav/SubscriberNav";
 import { useRouter } from "next/navigation";
 import { AuthContext, AuthProvider } from "../../context/auth";
 import { LoadingOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 import { Layout } from "antd";
+import SubscriberNav from "../nav/SubscriberNav";
 
 const { Content } = Layout;
 
@@ -21,10 +21,10 @@ const SubscriberLayout = (props) => {
 
   useEffect(() => {
     if (auth?.token) {
-      getCurrentSubscriber();
+      getCurrentAuthor();
     }
   }, [auth?.token]);
-  const getCurrentSubscriber = async () => {
+  const getCurrentAuthor = async () => {
     try {
       const { data } = await axios.get("/current-subscriber");
 
@@ -48,10 +48,7 @@ const SubscriberLayout = (props) => {
       />
     );
   }
-  if (!auth?.user || auth?.user?.role !== "Subscriber") {
-    router.push("/pages/subscriber");
-    return null;
-  }
+
   const backgroundColor = theme === "dark" ? "#325e65" : "#ffffff";
   const color = theme === "dark" ? "#ffffff" : "#000000";
 

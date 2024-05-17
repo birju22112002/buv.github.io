@@ -58,7 +58,7 @@ const ProfileUpdate = ({ title }) => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.put(`/${router.query.routename}`, {
+      const { data } = await axios.put(`/update-user`, {
         id,
         name,
         email,
@@ -72,7 +72,7 @@ const ProfileUpdate = ({ title }) => {
           ? image._id
           : undefined,
       });
-      // console.log("PROFILE UPDATED => ", data);
+      console.log("PROFILE UPDATED => ", data);
       if (data?.error) {
         toast.error(data.error);
         setLoading(false);
