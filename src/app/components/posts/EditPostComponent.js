@@ -46,13 +46,19 @@ function EditPostComponent({ page = "admin" }) {
         axios.get(`/post/${slug}`),
         axios.get("/categories"),
       ]);
+
       if (postData.data) {
-        const { title, content, categories, featuredImage, _id } =
-          postData.data;
+        const {
+          title,
+          content,
+          categories = [],
+          featuredImage,
+          _id,
+        } = postData.data.post; // Adjusting to the expected structure { post: { ... } }
         setTitle(title);
         setContent(content);
-        setLoadedCategories(categoriesData.data);
-        setSelectedCategories(categories.map((cat) => cat._id));
+        setLoadedCategories(categoriesData.data || []);
+        setSelectedCategories(categories.map((cat) => cat._id) || []);
         setFeaturedImage(featuredImage);
         setPostId(_id);
       } else {
@@ -116,7 +122,6 @@ function EditPostComponent({ page = "admin" }) {
             onChange={(newContent) => {}}
           />
         </div>
-
         <br />
         <br />
       </Col>

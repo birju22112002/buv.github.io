@@ -1,8 +1,8 @@
 /** @format */
 
 "use client";
-import { useEffect, useContext } from "react";
-import { Row, Col, Button, List } from "antd";
+import { useState, useEffect, useContext } from "react";
+import { Row, Col, Button, List, Input } from "antd";
 import AdminLayout from "../../../../components/layouts/AdminLayout";
 import Link from "next/link";
 import { PlusOutlined } from "@ant-design/icons";
@@ -17,6 +17,7 @@ function Posts() {
   const [post, setPost] = useContext(PostContext);
   const { posts } = post;
   const { theme } = useContext(ThemeContext);
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -25,7 +26,12 @@ function Posts() {
 
   const fetchPosts = async () => {
     try {
-      const { data } = await axios.get("/posts");
+      const token = localStorage.getItem("token");
+      const { data } = await axios.get("/posts-for-admin", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setPost((prev) => ({ ...prev, posts: data }));
     } catch (err) {
       console.log(err);
@@ -77,8 +83,18 @@ function Posts() {
           <h1 style={{ marginTop: 15, margin: 15 }}>
             <b> {posts?.length} Posts</b>
           </h1>
+
+          <Input
+            placeholder='Search'
+            type='search'
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value.toLowerCase())}
+          />
+
           <PostsList
-            posts={posts}
+            posts={posts?.filter((p) =>
+              p.title.toLowerCase().includes(keyword)
+            )}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />
