@@ -61,7 +61,9 @@ const TopNav = () => {
       <Menu.Item key='posts' icon={<DatabaseOutlined />}>
         <Link href='/pages/posts'>Posts</Link>
       </Menu.Item>
-
+      <Menu.Item key='contact' icon={<MailOutlined />}>
+        <Link href='/pages/contact'>Contact</Link>
+      </Menu.Item>
       {auth?.user === null && (
         <>
           <Menu.Item

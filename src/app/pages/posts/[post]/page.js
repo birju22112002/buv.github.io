@@ -13,6 +13,14 @@ import CommentForm from "../../../components/comments/CommentForm";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import { toast } from "react-hot-toast";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+} from "react-share";
 
 dayjs.extend(relativeTime);
 
@@ -74,6 +82,8 @@ const SinglePost = ({ postComments = [] }) => {
     return <div>Loading...</div>;
   }
 
+  const shareUrl = window.location.href;
+
   return (
     <>
       <Head>
@@ -98,6 +108,20 @@ const SinglePost = ({ postComments = [] }) => {
             ))}
             {post.postedBy?.name && ` / by ${post.postedBy.name}`}
           </p>
+          <br />
+          {/* social share */}
+          <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+            <FacebookShareButton url={shareUrl} quote={post.title}>
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <TwitterShareButton url={shareUrl} title={post.title}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+            <LinkedinShareButton url={shareUrl} title={post.title}>
+              <LinkedinIcon size={32} round />
+            </LinkedinShareButton>
+          </div>
+
           <Card
             style={{
               borderRadius: "10px",
