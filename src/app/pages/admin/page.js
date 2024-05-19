@@ -1,21 +1,88 @@
 /** @format */
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 import AdminLayout from "../../components/layouts/AdminLayout";
-import { Layout } from "antd";
+import Link from "next/link";
+import axios from "axios";
+import { Row, Col, Divider } from "antd";
+import RenderProgress from "../../components/posts/RenderProgress";
 
-const { Sider, Content } = Layout;
+// const { Sider, Content } = Layout;
+function Admin() {
+  // state
+  const [numbers, setNumbers] = useState({});
 
-const AdminPage = () => {
-  const { theme } = useContext(ThemeContext);
-  const color = theme === "dark" ? "#ffffff" : "#000000";
+  useEffect(() => {
+    getNumbers();
+  }, []);
+
+  const getNumbers = async () => {
+    try {
+      const { data } = await axios.get("/numbers");
+      setNumbers(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <AdminLayout>
-      <h1 style={{ color }}>This is Birju</h1>
-      <p style={{ color }}>Follow Me For More Content....</p>
+      <Row>
+        <Col span={24}>
+          <Divider>
+            <h1>Statistics</h1>
+          </Divider>
+        </Col>
+      </Row>
+
+      <Row>
+        {/* posts */}
+        <Col
+          span={12}
+          style={{ marginTop: 50, textAlign: "center", fontSize: 20 }}>
+          <RenderProgress
+            number={numbers.posts}
+            name='Posts'
+            link='/admin/posts'
+          />
+        </Col>
+        {/* comments */}
+        <Col
+          span={12}
+          style={{ marginTop: 50, textAlign: "center", fontSize: 20 }}>
+          <RenderProgress
+            number={numbers.comments}
+            name='Comments'
+            link='/admin/comments'
+          />
+        </Col>
+      </Row>
+
+      <Row>
+        {/* catgories */}
+        <Col
+          span={12}
+          style={{ marginTop: 50, textAlign: "center", fontSize: 20 }}>
+          <RenderProgress
+            number={numbers.categories}
+            name='Categories'
+            link='/admin/categories'
+          />
+        </Col>
+        {/* users */}
+        <Col
+          span={12}
+          style={{ marginTop: 50, textAlign: "center", fontSize: 20 }}>
+          <RenderProgress
+            number={numbers.users}
+            name='Users'
+            link='/admin/users'
+          />
+        </Col>
+      </Row>
     </AdminLayout>
   );
-};
+}
 
-export default AdminPage;
+export default Admin;

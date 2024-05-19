@@ -4,14 +4,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Row, Col, Card, Typography, List, Avatar } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Typography,
+  List,
+  Avatar,
+  Divider,
+  Button,
+} from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { ThemeContext } from "../../../context/ThemeContext";
 import CommentForm from "../../../components/comments/CommentForm";
 import relativeTime from "dayjs/plugin/relativeTime";
-
 import { toast } from "react-hot-toast";
 import {
   FacebookShareButton,
@@ -21,6 +29,8 @@ import {
   TwitterIcon,
   LinkedinIcon,
 } from "react-share";
+import useCategory from "../../../hooks/useCategory";
+import useLatestPosts from "../../../hooks/useLatestPosts";
 
 dayjs.extend(relativeTime);
 
@@ -35,6 +45,10 @@ const SinglePost = ({ postComments = [] }) => {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { categories } = useCategory();
+  const { latestPosts, latestPostsError, latestPostsLoading } =
+    useLatestPosts();
+
   useEffect(() => {
     const fetchPostBySlug = async (slug) => {
       try {
@@ -42,7 +56,7 @@ const SinglePost = ({ postComments = [] }) => {
           `http://localhost:8000/api/post/${slug}`
         );
         setPost(response.data.post);
-        setComments(response.data.comments || []); // Ensure comments are set and handle undefined
+        setComments(response.data.comments || []);
       } catch (error) {
         if (error.response?.status === 404) {
           setError("Post not found");
@@ -65,7 +79,6 @@ const SinglePost = ({ postComments = [] }) => {
       const { data } = await axios.post(`/comment/${post._id}`, { comment });
       setComments([data, ...comments]);
       setComment("");
-      // Assuming you have a toast function defined
       toast.success("Comment posted successfully");
       setLoading(false);
     } catch (err) {
@@ -109,7 +122,6 @@ const SinglePost = ({ postComments = [] }) => {
             {post.postedBy?.name && ` / by ${post.postedBy.name}`}
           </p>
           <br />
-          {/* social share */}
           <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
             <FacebookShareButton url={shareUrl} quote={post.title}>
               <FacebookIcon size={32} round />
@@ -163,17 +175,28 @@ const SinglePost = ({ postComments = [] }) => {
         </Col>
 
         <Col xs={22} xl={6} offset={1}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
-          officia suscipit assumenda ducimus dolorum optio, natus id blanditiis
-          aliquid, quibusdam quasi alias. Nobis excepturi cupiditate minima sed
-          in fugit eaque, quod vitae suscipit sit maxime. Vitae consequuntur
-          alias rerum, consectetur modi incidunt unde ipsam optio amet
-          praesentium quo exercitationem asperiores eveniet cupiditate illo.
-          Nemo quo, esse impedit id ipsum magnam earum dolores inventore, quidem
-          doloremque nesciunt ad fugit quis deleniti provident corrupti
-          doloribus eum quisquam, quae non? Eveniet, accusantium doloremque, in
-          repudiandae tempore voluptas velit est obcaecati qui itaque illum
-          eligendi amet ipsum, culpa modi ut. Laudantium libero blanditiis qui?
+          <Divider>Categories</Divider>
+
+          {categories.map((c) => (
+            <Link href={`/pages/category/${c.slug}`} key={c._id}>
+              <Button style={{ margin: 2 }}>{c.name}</Button>
+            </Link>
+          ))}
+
+          <Divider>Latest Posts</Divider>
+          {latestPostsLoading ? (
+            <p>Loading latest posts...</p>
+          ) : latestPostsError ? (
+            <p>Error loading latest posts: {latestPostsError.message}</p>
+          ) : latestPosts.length > 0 ? (
+            latestPosts.map((p) => (
+              <Link href={`/pages/posts/${p.slug}`} key={p._id}>
+                <h4>{p.title}</h4>
+              </Link>
+            ))
+          ) : (
+            <p>No latest posts available.</p>
+          )}
         </Col>
       </Row>
     </>

@@ -29,6 +29,7 @@
     "kaloraat": "^2.2.1",
     "next": "^14.2.2",
     "react": "^18.2.0",
+    "react-countup": "^6.5.3",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-image-file-resizer": "^0.4.8",
