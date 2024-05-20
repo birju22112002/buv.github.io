@@ -36,6 +36,16 @@
     text-wrap: balance;
   }
 }
+/* styles/globals.css */
+body.light {
+  background-color: white;
+  color: black;
+}
+
+body.dark {
+  background-color: black;
+  color: white;
+}
 
 .container {
   max-width: 1200px;
@@ -43,11 +53,24 @@
   margin: 0 auto;
   padding: 0 60px;
 }
-.light {
+/* src/app/globals.css */
+
+body.light {
+  background-color: white;
+  color: black;
+}
+
+body.dark {
   background-color: black;
   color: white;
 }
+
+.light {
+  --title-color: black;
+  --meta-color: black;
+}
+
 .dark {
-  background-color: white;
-  color: black;
+  --title-color: white;
+  --meta-color: white;
 }

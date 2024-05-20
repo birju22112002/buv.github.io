@@ -9,6 +9,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 import { Layout } from "antd";
+import LoadingToRedirect from "../LoadingToRedirect";
 
 const { Content } = Layout;
 
@@ -35,18 +36,7 @@ const AuthorLayout = (props) => {
     }
   };
   if (loading) {
-    return (
-      <LoadingOutlined
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          fontSize: "50px",
-          color: "red",
-        }}
-      />
-    );
+    return <LoadingToRedirect />;
   }
 
   const backgroundColor = theme === "dark" ? "#325e65" : "#ffffff";

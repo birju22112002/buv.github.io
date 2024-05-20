@@ -2,48 +2,55 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { Layout, Row, Col, Input, Select, Modal, Button, Image } from "antd";
-import JoditEditor from "jodit-react";
+import dynamic from "next/dynamic";
 import { ThemeContext } from "../../context/ThemeContext";
 import axios from "axios";
-import { uploadImage } from "../../function/upload/page";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { UploadOutlined } from "@ant-design/icons";
-import Media from "../media/page";
+import MediaLibrary from "../media/MediaLibrary";
 import { MediaContext } from "../../context/media";
 
+// Dynamically import JoditEditor
+const JoditEditor = dynamic(() => import("jodit-react"), {
+  ssr: false,
+});
+
 const { Option } = Select;
-const { Content, Sider } = Layout;
 
 function NewPostComponent({ page = "admin" }) {
-  // load from local storage
-  const savedTitle = () => {
-    if (process.browser) {
-      if (localStorage.getItem("post-title")) {
-        return JSON.parse(localStorage.getItem("post-title"));
-      }
-    }
-  };
-  const savedContent = () => {
-    if (process.browser) {
-      if (localStorage.getItem("post-content")) {
-        return JSON.parse(localStorage.getItem("post-content"));
-      }
-    }
-  };
-  // context
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const [media, setMedia] = useContext(MediaContext);
-  // state
-  const [title, setTitle] = useState(savedTitle());
-  const [content, setContent] = useState(savedContent());
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [categories, setCategories] = useState([]);
   const [loadedCategories, setLoadedCategories] = useState([]);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // This is for preview modal visibility
   const [loading, setLoading] = useState(false);
   const [featuredImage, setFeaturedImage] = useState(null);
-  // hook
   const router = useRouter();
+
+  // Function to safely access localStorage
+  const safeLocalStorageGetItem = (key) => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(key);
+    }
+    return null;
+  };
+
+  const safeLocalStorageSetItem = (key, value) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, value);
+    }
+  };
+
+  // Initialize title and content from localStorage
+  useEffect(() => {
+    const savedTitle = safeLocalStorageGetItem("post-title");
+    const savedContent = safeLocalStorageGetItem("post-content");
+    if (savedTitle) setTitle(JSON.parse(savedTitle));
+    if (savedContent) setContent(JSON.parse(savedContent));
+  }, []);
 
   useEffect(() => {
     loadCategories();
@@ -72,14 +79,20 @@ function NewPostComponent({ page = "admin" }) {
         setLoading(false);
       } else {
         toast.success("Post created successfully");
-        localStorage.removeItem("post-title");
-        localStorage.removeItem("post-content");
+        // Reset the state and localStorage
+        setTitle("");
+        setContent("");
+        setCategories([]);
         setFeaturedImage(null);
+        setMedia({ ...media, selected: null });
+        safeLocalStorageSetItem("post-title", "");
+        safeLocalStorageSetItem("post-content", "");
+        setLoading(false);
         router.push(`/pages/${page}/posts/post`);
       }
     } catch (err) {
       console.log(err);
-      toast.error("Post create failed. Try again.");
+      toast.error("Post creation failed. Try again.");
       setLoading(false);
     }
   };
@@ -94,25 +107,32 @@ function NewPostComponent({ page = "admin" }) {
           placeholder='Give your post a title'
           onChange={(e) => {
             setTitle(e.target.value);
-            localStorage.setItem("post-title", JSON.stringify(e.target.value));
+            safeLocalStorageSetItem(
+              "post-title",
+              JSON.stringify(e.target.value)
+            );
           }}
         />
         <br />
         <br />
         <div className='editor-scroll'>
-          <JoditEditor
-            value={content}
-            tabIndex={1}
-            onBlur={(newContent) => setContent(newContent)}
-            onChange={(newContent) => {}}
-            upload={uploadImage}
-          />
+          {typeof window !== "undefined" && ( // Ensure JoditEditor is only rendered on the client-side
+            <JoditEditor
+              value={content}
+              tabIndex={1}
+              onBlur={(newContent) => {
+                setContent(newContent);
+                safeLocalStorageSetItem(
+                  "post-content",
+                  JSON.stringify(newContent)
+                );
+              }}
+              onChange={(newContent) => {}}
+            />
+          )}
         </div>
-
         <br />
         <br />
-
-        {/* <pre>{JSON.stringify(loadedCategories, null, 4)}</pre> */}
       </Col>
 
       <Col span={6} offset={1}>
@@ -129,13 +149,13 @@ function NewPostComponent({ page = "admin" }) {
         </Button>
 
         <h4>Categories</h4>
-
         <Select
           mode='multiple'
           allowClear={true}
           placeholder='Select categories'
           style={{ width: "100%" }}
-          onChange={(v) => setCategories(v)}>
+          onChange={(v) => setCategories(v)}
+          value={categories}>
           {loadedCategories.map((item) => (
             <Option key={item.name}>{item.name}</Option>
           ))}
@@ -154,27 +174,22 @@ function NewPostComponent({ page = "admin" }) {
           Publish
         </Button>
       </Col>
-      {/* preview modal */}
+
       <Modal
-        title='Preview'
-        centered
         visible={visible}
-        onOk={() => setVisible(false)}
-        onCancel={() => setVisible(false)}
-        width={720}
-        footer={null}>
+        title='Post Preview'
+        footer={null}
+        onCancel={() => setVisible(false)}>
         <h1>{title}</h1>
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </Modal>
-      {/* media modal */}
+
       <Modal
         visible={media.showMediaModal}
-        title='Media'
-        onOk={() => setMedia({ ...media, showMediaModal: false })}
-        onCancel={() => setMedia({ ...media, showMediaModal: false })}
-        width={720}
-        footer={null}>
-        <Media />
+        title='Media Library'
+        footer={null}
+        onCancel={() => setMedia({ ...media, showMediaModal: false })}>
+        <MediaLibrary page={page} />
       </Modal>
     </Row>
   );

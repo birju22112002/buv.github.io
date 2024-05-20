@@ -4,11 +4,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 import { useRouter } from "next/navigation";
 import { AuthContext, AuthProvider } from "../../context/auth";
-import { LoadingOutlined } from "@ant-design/icons";
+// import { LoadingOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 import { Layout } from "antd";
 import SubscriberNav from "../nav/SubscriberNav";
+import LoadingToRedirect from "../LoadingToRedirect";
 
 const { Content } = Layout;
 
@@ -35,18 +36,7 @@ const SubscriberLayout = (props) => {
     }
   };
   if (loading) {
-    return (
-      <LoadingOutlined
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          fontSize: "50px",
-          color: "red",
-        }}
-      />
-    );
+    return <LoadingToRedirect />;
   }
 
   const backgroundColor = theme === "dark" ? "#325e65" : "#ffffff";

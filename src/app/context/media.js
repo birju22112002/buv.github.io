@@ -1,13 +1,14 @@
 /** @format */
 
-import React, { useState, createContext } from "react";
+// context/media.js
+import { createContext, useState } from "react";
 
-export const MediaContext = createContext();
+const MediaContext = createContext();
 
-export const MediaProvider = ({ children }) => {
+const MediaProvider = ({ children }) => {
   const [media, setMedia] = useState({
     images: [],
-    selected: "",
+    selected: null,
     showMediaModal: false,
   });
 
@@ -17,3 +18,5 @@ export const MediaProvider = ({ children }) => {
     </MediaContext.Provider>
   );
 };
+
+export { MediaContext, MediaProvider };

@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { UploadOutlined } from "@ant-design/icons";
 import Media from "../media/page";
 import { MediaContext } from "../../context/media";
-
+import MediaLibrary from "../media/MediaLibrary";
 const { Option } = Select;
 
 function EditPostComponent({ page = "admin" }) {
@@ -34,6 +34,12 @@ function EditPostComponent({ page = "admin" }) {
       loadPostAndCategories(slug);
     }
   }, []);
+
+  useEffect(() => {
+    if (media?.selected) {
+      setFeaturedImage(media.selected);
+    }
+  }, [media?.selected]);
 
   const getSlugFromUrl = () => {
     const pathArray = window.location.pathname.split("/");
@@ -105,7 +111,7 @@ function EditPostComponent({ page = "admin" }) {
   return (
     <Row>
       <Col span={14} offset={1}>
-        <h1>EDIT post</h1>
+        <h1>Edit Post</h1>
         <Input
           size='large'
           value={title}
@@ -154,15 +160,16 @@ function EditPostComponent({ page = "admin" }) {
           ))}
         </Select>
 
-        {media?.selected ? (
+        {featuredImage?.url && (
+          <div style={{ marginTop: "15px" }}>
+            <Image width='100%' src={featuredImage.url} />
+          </div>
+        )}
+        {/* {media?.selected && (
           <div style={{ marginTop: "15px" }}>
             <Image width='100%' src={media?.selected?.url} />
           </div>
-        ) : featuredImage?.url ? (
-          <div style={{ marginTop: "15px" }}>
-            <Image width='100%' src={featuredImage?.url} />
-          </div>
-        ) : null}
+        )} */}
 
         <Button
           loading={loading}
@@ -172,27 +179,20 @@ function EditPostComponent({ page = "admin" }) {
           Publish
         </Button>
       </Col>
-
       <Modal
-        title='Preview'
-        centered
         visible={visible}
-        onOk={() => setVisible(false)}
-        onCancel={() => setVisible(false)}
-        width={720}
-        footer={null}>
+        title='Post Preview'
+        footer={null}
+        onCancel={() => setVisible(false)}>
         <h1>{title}</h1>
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </Modal>
-
       <Modal
         visible={media.showMediaModal}
-        title='Media'
-        onOk={() => setMedia({ ...media, showMediaModal: false })}
-        onCancel={() => setMedia({ ...media, showMediaModal: false })}
-        width={720}
-        footer={null}>
-        <Media />
+        title='Media Library'
+        footer={null}
+        onCancel={() => setMedia({ ...media, showMediaModal: false })}>
+        <MediaLibrary page={page} />
       </Modal>
     </Row>
   );
