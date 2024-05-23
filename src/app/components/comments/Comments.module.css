@@ -1,0 +1,29 @@
+/** @format */
+
+.container {
+  margin: 20px;
+  padding: 20px;
+}
+
+.darkInput::placeholder {
+  color: #fff !important;
+}
+
+.listItem {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: transparent;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.listItem:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+}
+
+.lineBreak {
+  background-color: #2f2f2f;
+  height: 2px;
+  margin: 15px 0;
+}

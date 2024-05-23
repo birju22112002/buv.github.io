@@ -18,11 +18,13 @@ const ToggleTheme = () => {
   };
 
   return (
-    <>
-      <button className={styles.themebtns} onClick={handleToggleTheme}>
-        {theme === "light" ? "🌞" : "🌗"}
-      </button>
-    </>
+    <button
+      className={`${styles.themebtns} ${
+        theme === "light" ? styles.light : styles.dark
+      }`}
+      onClick={handleToggleTheme}>
+      {theme === "light" ? "🌞" : "🌗"}
+    </button>
   );
 };
 

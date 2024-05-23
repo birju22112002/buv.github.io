@@ -1,0 +1,89 @@
+/** @format */
+
+.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.darkBackground {
+  background-color: #000000;
+  min-height: 100vh;
+}
+
+.lightBackground {
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.darkText {
+  color: #fff !important;
+}
+
+.darkCard {
+  background-color: #101010;
+  color: #fff;
+}
+
+.darkDivider h1,
+.darkDivider p {
+  color: #fff !important;
+}
+
+.darkButton {
+  background: black;
+  color: #ffffff;
+  border: 1px solid #fff;
+}
+
+.darkButton:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.lightButton {
+  background: transparent;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.lightButton:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.darkLink {
+  color: #ffffff !important;
+}
+
+.darkLink:hover {
+  color: #95adc0 !important;
+}
+
+.darkCommentMeta .ant-list-item-meta-title,
+.darkCommentMeta .ant-list-item-meta-description,
+.darkCommentMeta .ant-list-item-meta-avatar {
+  color: #fff !important;
+}
+
+.listItem {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: transparent;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.listItem:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+}
+
+.lightAvatar {
+  background-color: #5e5e5e;
+  color: #fff;
+}
+
+.darkAvatar {
+  background-color: #5f5e5e;
+  color: #fffdfd;
+}

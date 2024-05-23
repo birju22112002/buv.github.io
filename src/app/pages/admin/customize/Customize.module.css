@@ -1,0 +1,22 @@
+/** @format */
+
+.darkInput::placeholder {
+  color: #fff !important;
+}
+
+.darkInput {
+  background-color: transparent !important;
+  color: #fff !important;
+  border-color: #444 !important;
+}
+
+.darkButton {
+  background-color: transparent !important;
+  color: #fff !important;
+  border-color: #444 !important;
+}
+
+.darkDivider h1,
+.darkDivider p {
+  color: #fff !important;
+}

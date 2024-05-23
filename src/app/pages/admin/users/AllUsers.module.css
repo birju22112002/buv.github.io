@@ -1,0 +1,40 @@
+/**
+ * List item styles
+ *
+ * @format
+ */
+.darkInput::placeholder {
+  color: #fff !important;
+}
+.listItem {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: transparent;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.listItem:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+}
+
+/* Line break style */
+.lineBreak {
+  background-color: #2f2f2f;
+  height: 2px;
+  margin: 15px 0;
+}
+
+.textLight {
+  color: black; /* Set text color to black for light theme */
+}
+
+.textDark {
+  color: white; /* Set text color to white for dark theme */
+}
+/* Avatar styles for dark theme */
+.avatarDark {
+  border: 1px solid #2f2f2f;
+  background-color: #2f2f2f; /* Add a white border for better visibility */
+}

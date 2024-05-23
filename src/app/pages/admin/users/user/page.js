@@ -7,8 +7,8 @@ import { Row, Col, Button, Input, Checkbox, Select } from "antd";
 import { ThemeContext } from "../../../../context/ThemeContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import generator from "generate-password";
+import styles from "./AddUser.module.css";
 
 const NewUser = () => {
   // state
@@ -50,6 +50,24 @@ const NewUser = () => {
     }
   };
 
+  // styles
+  const inputStyle = {
+    margin: "10px 0px",
+    size: "large",
+    backgroundColor: theme === "dark" ? "transparent" : "#fff",
+    color: theme === "dark" ? "#fff" : "#000",
+    borderColor: theme === "dark" ? "#444" : "#d9d9d9",
+  };
+
+  const buttonStyle = {
+    margin: "10px 0px",
+    color: theme === "dark" ? "#fff" : "#000",
+    backgroundColor: theme === "dark" ? "transparent" : "#f0f0f0",
+  };
+
+  const inputClassName = theme === "dark" ? styles.darkInput : "";
+  const selectClassName = theme === "dark" ? styles.darkSelect : "";
+
   // show form
   return (
     <AdminLayout>
@@ -63,21 +81,24 @@ const NewUser = () => {
             Add new user
           </h4>
           <Input
-            style={{ margin: "20px 0px 10px 0px" }}
+            className={inputClassName}
+            style={inputStyle}
             size='large'
             placeholder='Full name'
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <Input
-            style={{ margin: "10px 0px 10px 0px" }}
+            className={inputClassName}
+            style={inputStyle}
             size='large'
             placeholder='Email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input
-            style={{ margin: "10px 0px 10px 0px" }}
+            className={inputClassName}
+            style={inputStyle}
             size='large'
             placeholder='Website'
             value={website}
@@ -88,15 +109,12 @@ const NewUser = () => {
               onClick={() => setPassword(generator.generate({ length: 6 }))}
               type='default'
               size='large'
-              style={{
-                margin: "10px 0px 10px 0px",
-                color: theme === "dark" ? "#fff" : "#000",
-                backgroundColor: theme === "dark" ? "#333" : "#f0f0f0",
-              }}>
+              style={buttonStyle}>
               Generate password
             </Button>
             <Input.Password
-              style={{ margin: "10px 0px 10px 0px" }}
+              className={inputClassName}
+              style={inputStyle}
               size='large'
               placeholder='Password'
               value={password}
@@ -106,7 +124,8 @@ const NewUser = () => {
 
           <Select
             defaultValue='Subscriber'
-            style={{ margin: "10px 0px 10px 0px", width: "100%" }}
+            className={selectClassName}
+            style={{ ...inputStyle, width: "100%" }}
             onChange={(e) => setRole(e)}>
             <Select.Option value='Subscriber'>Subscriber</Select.Option>
             <Select.Option value='Author'>Author</Select.Option>
@@ -123,11 +142,7 @@ const NewUser = () => {
           <Button
             onClick={handleSubmit}
             type='default'
-            style={{
-              margin: "10px 0px 10px 0px",
-              color: theme === "dark" ? "#fff" : "#000",
-              backgroundColor: theme === "dark" ? "#333" : "#f0f0f0",
-            }}
+            style={buttonStyle}
             loading={loading}
             block>
             Submit

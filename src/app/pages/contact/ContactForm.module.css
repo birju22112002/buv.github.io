@@ -1,0 +1,60 @@
+/**
+ * ContactForm.module.css
+ *
+ * @format
+ */
+.darkBackground {
+  background-color: #000;
+  min-height: 100vh;
+  padding: 50px 0;
+  color: #fff;
+}
+
+.lightBackground {
+  background-color: #fff;
+  min-height: 100vh;
+  padding: 50px 0;
+  color: #000;
+}
+
+.transparentInput {
+  background-color: #333 !important;
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+
+.transparentInput::placeholder {
+  color: #fff !important;
+}
+
+.lightInput {
+  background-color: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  color: #000 !important;
+}
+
+.lightInput::placeholder {
+  color: #000 !important;
+}
+
+.transparentButton {
+  background-color: #1a1a1a !important;
+  border-color: #333 !important;
+  color: #fff !important;
+}
+
+.transparentButton:hover {
+  background-color: #333 !important;
+  border-color: #555 !important;
+}
+
+.lightButton {
+  background-color: #fff !important;
+  border-color: #d9d9d9 !important;
+  color: #000 !important;
+}
+
+.lightButton:hover {
+  background-color: #f0f0f0 !important;
+  border-color: #d9d9d9 !important;
+}

@@ -9,16 +9,18 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import AdminLayout from "../../../components/layouts/AdminLayout";
 import MediaLibrary from "../../../components/media/MediaLibrary";
+import { ThemeContext } from "../../../context/ThemeContext";
+import styles from "./Customize.module.css";
 
 const Customize = () => {
   // context
   const [media, setMedia] = useContext(MediaContext);
+  const { theme } = useContext(ThemeContext); // Get the current theme from ThemeContext
   // state
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [fullWidthImage, setFullWidthImage] = useState(null);
-  const [featuredImage, setFeaturedImage] = useState(null);
 
   useEffect(() => {
     loadHomepage();
@@ -55,13 +57,31 @@ const Customize = () => {
     }
   };
 
+  const inputStyle = {
+    margin: "20px 0px",
+    size: "large",
+    backgroundColor: theme === "dark" ? "transparent" : "#fff",
+    color: theme === "dark" ? "#fff" : "#000",
+    borderColor: theme === "dark" ? "#444" : "#d9d9d9",
+  };
+
+  const buttonStyle = {
+    margin: "10px 0px",
+    color: theme === "dark" ? "#fff" : "#000",
+    backgroundColor: theme === "dark" ? "transparent" : "#f0f0f0",
+  };
+
   return (
     <AdminLayout>
       <Row>
         <Col span={24}>
           <Divider>
-            <h1>Customize home page</h1>
-            <p>Set full width image title and subtitle</p>
+            <h1 style={{ color: theme === "dark" ? "#fff" : "#000" }}>
+              Customize home page
+            </h1>
+            <p style={{ color: theme === "dark" ? "#fff" : "#000" }}>
+              Set full width image title and subtitle
+            </p>
           </Divider>
         </Col>
 
@@ -69,7 +89,7 @@ const Customize = () => {
           <Media />
 
           <Input
-            style={{ margin: "20px 0px 20px 0px" }}
+            style={inputStyle}
             size='large'
             placeholder='Give it a title'
             value={title}
@@ -77,6 +97,7 @@ const Customize = () => {
           />
 
           <Input
+            style={inputStyle}
             size='large'
             placeholder='Give it a subtitle'
             value={subtitle}
@@ -86,7 +107,7 @@ const Customize = () => {
           <Button
             onClick={handleSave}
             type='default'
-            style={{ margin: "10px 0px 10px 0px" }}
+            style={buttonStyle}
             loading={loading}
             block>
             Save

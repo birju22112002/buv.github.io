@@ -7,7 +7,8 @@ import { AuthContext } from "../../context/auth";
 import { CloseCircleOutlined, InboxOutlined } from "@ant-design/icons";
 import { MediaContext } from "../../context/media";
 import { toast } from "react-hot-toast";
-
+import { ThemeContext } from "../../context/ThemeContext";
+import styles from "./Media.module.css";
 const { Dragger } = Upload;
 
 const MediaLibrary = ({ page = "admin" }) => {
@@ -15,6 +16,7 @@ const MediaLibrary = ({ page = "admin" }) => {
   const [auth] = useContext(AuthContext);
   const [media, setMedia] = useContext(MediaContext);
   const [showPreview, setShowMedia] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchMedia = async () => {
@@ -72,12 +74,20 @@ const MediaLibrary = ({ page = "admin" }) => {
   };
 
   return (
-    <>
+    <div>
       <Dragger {...props} accept='image/*'>
-        <p className='ant-upload-drag-icon'>
+        <p
+          className={`${
+            theme === "dark" ? styles.darkUploadText : ""
+          } ant-upload-text`}>
           <InboxOutlined />
         </p>
-        <p className='ant-upload-text'>
+        <p
+          className='ant-upload-text'
+          style={{
+            marginBottom: "-10px",
+            color: theme === "dark" ? "#fff" : "#000",
+          }}>
           Click or drag file to this area to upload
         </p>
       </Dragger>
@@ -116,7 +126,7 @@ const MediaLibrary = ({ page = "admin" }) => {
             )
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -73,7 +73,13 @@ const AdminNav = () => {
         </Menu.Item>
 
         {/* posts */}
-        <SubMenu key='2' icon={<PushpinOutlined />} title='Posts'>
+        <SubMenu
+          key='2'
+          icon={<PushpinOutlined />}
+          title='Posts'
+          style={{
+            backgroundColor: theme === "dark" ? "#222222" : null,
+          }}>
           <Menu.Item key='3'>
             <Link
               href='/pages/admin/posts/post'
@@ -102,7 +108,13 @@ const AdminNav = () => {
         </SubMenu>
 
         {/* library */}
-        <SubMenu key='6' icon={<CameraOutlined />} title='Media'>
+        <SubMenu
+          key='6'
+          icon={<CameraOutlined />}
+          title='Media'
+          style={{
+            backgroundColor: theme === "dark" ? "#222222" : null,
+          }}>
           <Menu.Item key='7'>
             <Link
               href='/pages/admin/media/library'
@@ -131,7 +143,13 @@ const AdminNav = () => {
         </Menu.Item>
 
         {/* users */}
-        <SubMenu key='10' icon={<UserSwitchOutlined />} title='Users'>
+        <SubMenu
+          key='10'
+          icon={<UserSwitchOutlined />}
+          title='Users'
+          style={{
+            backgroundColor: theme === "dark" ? "#222222" : null,
+          }}>
           <Menu.Item key='11'>
             <Link
               href='/pages/admin/users'

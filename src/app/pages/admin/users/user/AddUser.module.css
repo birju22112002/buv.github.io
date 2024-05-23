@@ -1,0 +1,30 @@
+/** @format */
+
+.darkInput::placeholder {
+  color: #fff !important;
+}
+
+.darkSelect .ant-select-selector {
+  background-color: transparent !important;
+  border-color: #000 !important;
+  color: #fff !important;
+}
+
+.darkSelect .ant-select-dropdown {
+  background-color: #000 !important;
+}
+
+.darkSelect .ant-select-item {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.darkSelect .ant-select-item-option-active {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+.darkSelect .ant-select-item-option-selected {
+  background-color: #444 !important;
+  color: #fff !important;
+}

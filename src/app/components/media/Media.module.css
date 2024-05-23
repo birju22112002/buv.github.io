@@ -1,0 +1,32 @@
+/** @format */
+
+.darkTabs .ant-tabs-tab {
+  color: #fff !important;
+}
+
+.darkTabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #1890ff !important; /* Optional: Change the active tab color */
+}
+
+.darkTabs .ant-tabs-tab-btn:focus,
+.darkTabs .ant-tabs-tab-btn:hover {
+  color: #40a9ff !important; /* Optional: Change the tab hover color */
+}
+
+.darkTabs .ant-tabs-ink-bar {
+  background-color: #1890ff !important; /* Optional: Change the ink bar color */
+}
+
+.darkTabText {
+  color: #fff !important;
+}
+
+.darkBackground {
+  background-color: #000;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.darkUploadText {
+  color: #fff !important;
+}

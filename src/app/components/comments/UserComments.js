@@ -1,23 +1,27 @@
 /** @format */
 "use client";
+
 import { useEffect, useState, useContext } from "react";
 import { Row, Col, Button, Input, List, Modal } from "antd";
-
 import Link from "next/link";
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../../context/auth";
+import { ThemeContext } from "../../context/ThemeContext";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import CommentForm from "./CommentForm";
 import toast from "react-hot-toast";
+import styles from "./Comments.module.css";
 
 dayjs.extend(localizedFormat);
 
 function UserComments() {
   // context
   const [auth, setAuth] = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
+
   // state
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -44,7 +48,6 @@ function UserComments() {
   const fetchComments = async () => {
     try {
       const { data } = await axios.get(`/user-comments`);
-      //   console.log("__comments__", data);
       setComments(data);
     } catch (err) {
       console.log(err);
@@ -52,7 +55,6 @@ function UserComments() {
   };
 
   const handleDelete = async (comment) => {
-    // console.log("DELETE POST", post);
     try {
       const answer = window.confirm("Are you sure you want to delete?");
       if (!answer) return;
@@ -73,7 +75,6 @@ function UserComments() {
       const { data } = await axios.put(`/comment/${selectedComment._id}`, {
         content,
       });
-      //   console.log("d:", data);
 
       let arr = comments;
       const index = arr.findIndex((c) => c._id === selectedComment._id);
@@ -94,25 +95,44 @@ function UserComments() {
   const filteredComments = comments?.filter((comment) =>
     comment.content.toLowerCase().includes(keyword)
   );
+  const listStyle = {
+    backgroundColor: theme === "dark" ? "#000" : "#fff",
+  };
+
+  const listItemStyle = {
+    color: theme === "dark" ? "#fff" : "#000",
+  };
+  const inputStyle = {
+    backgroundColor: theme === "dark" ? "transparent" : "#fff",
+    color: theme === "dark" ? "#fff" : "#000",
+    borderColor: theme === "dark" ? "#555" : "#d9d9d9",
+  };
   return (
     <>
-      <Row>
+      <Row className={styles.container}>
         <Col span={24}>
-          <h1 style={{ marginTop: 15 }}>{comments?.length} Comments</h1>
-
+          <h1 style={{ marginTop: 15, color: listItemStyle.color }}>
+            {comments?.length} Comments
+          </h1>
+          <br />
           <Input
             placeholder='Search'
             type='search'
             value={keyword}
             onChange={(e) => setKeyword(e.target.value.toLowerCase())}
+            style={{ ...inputStyle, marginBottom: 15 }}
+            className={theme === "dark" ? styles.darkInput : ""}
           />
           <List
             itemLayout='horizontal'
             dataSource={filteredComments}
+            style={listStyle}
             renderItem={(item) => (
               <List.Item
                 actions={[
-                  <Link href={`/pages/posts/${item?.postId?.slug}#${item._id}`}>
+                  <Link
+                    href={`/pages/posts/${item?.postId?.slug}#${item._id}`}
+                    style={listItemStyle}>
                     view
                   </Link>,
                   <a
@@ -120,28 +140,35 @@ function UserComments() {
                       setSelectedComment(item);
                       setVisible(true);
                       setContent(item.content);
-                    }}>
+                    }}
+                    style={listItemStyle}>
                     edit
                   </a>,
-                  <a onClick={() => handleDelete(item)}>delete</a>,
-                ]}>
+                  <a onClick={() => handleDelete(item)} style={listItemStyle}>
+                    delete
+                  </a>,
+                ]}
+                className={styles.listItem}
+                style={listStyle}>
                 <List.Item.Meta
-                  description={`On ${item?.postId?.title} | ${
-                    item?.postedBy?.name
-                  } | ${dayjs(item.createdAt).format("L LT")}`}
-                  title={item.content}
+                  description={
+                    <span style={listItemStyle}>
+                      On {item?.postId?.title} | {item?.postedBy?.name} |
+                      {dayjs(item.createdAt).format("L LT")}
+                    </span>
+                  }
+                  title={<span style={listItemStyle}>{item.content}</span>}
                 />
               </List.Item>
             )}
           />
-          {/* <pre>{JSON.stringify(comments, null, 4)}</pre> */}
         </Col>
       </Row>
 
       <Row>
         <Col span={24}>
           <Modal
-            visible={visible}
+            open={visible}
             title='Update comment'
             onOk={() => setVisible(false)}
             onCancel={() => setVisible(false)}

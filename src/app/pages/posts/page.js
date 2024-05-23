@@ -1,10 +1,12 @@
 /** @format */
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Row, Col, Card, Avatar, Button } from "antd";
 import Head from "next/head";
 import Link from "next/link";
+import { ThemeContext } from "../../context/ThemeContext";
+import styles from "./Posts.module.css";
 
 const { Meta } = Card;
 
@@ -15,6 +17,7 @@ const Posts = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const { theme } = useContext(ThemeContext); // Use the ThemeContext
 
   useEffect(() => {
     getTotal();
@@ -85,43 +88,52 @@ const Posts = () => {
           content='Blog posts about web development, programming etc'
         />
       </Head>
-      <Row gutter={12}>
-        {allPosts.map((post) => (
-          <Col
-            xs={24}
-            xl={8}
-            style={{ marginTop: 5, marginBottom: 5 }}
-            key={post.id}>
-            <Link href={`/pages/posts/${post.slug}`}>
-              <Card
-                hoverable
-                cover={
-                  <Avatar
-                    shape='square'
-                    style={{ height: "200px" }}
-                    src={post.featuredImage?.url || "/images/default.jpeg"}
-                    alt={post.title}
+      <div className={theme === "dark" ? styles.darkBackground : ""}>
+        <Row gutter={12}>
+          {allPosts.map((post) => (
+            <Col
+              xs={24}
+              xl={8}
+              style={{ marginTop: 5, marginBottom: 5 }}
+              key={post.id}>
+              <Link href={`/pages/posts/${post.slug}`}>
+                <Card
+                  hoverable
+                  className={theme === "dark" ? styles.darkCard : ""}
+                  cover={
+                    <Avatar
+                      shape='square'
+                      style={{ height: "200px" }}
+                      src={post.featuredImage?.url || "/images/default.jpeg"}
+                      alt={post.title}
+                    />
+                  }>
+                  <Meta
+                    title={
+                      <span className={theme === "dark" ? styles.darkText : ""}>
+                        {post.title}
+                      </span>
+                    }
                   />
-                }>
-                <Meta title={post.title} />
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
-      {allPosts?.length < total && (
-        <Row>
-          <Col span={24} style={{ textAlign: "center", padding: 20 }}>
-            <Button
-              size='large'
-              type='primary'
-              loading={loading}
-              onClick={() => setPage(page + 1)}>
-              Load More
-            </Button>
-          </Col>
+                </Card>
+              </Link>
+            </Col>
+          ))}
         </Row>
-      )}
+        {allPosts?.length < total && (
+          <Row>
+            <Col span={24} style={{ textAlign: "center", padding: 20 }}>
+              <Button
+                size='large'
+                type='primary'
+                loading={loading}
+                onClick={() => setPage(page + 1)}>
+                Load More
+              </Button>
+            </Col>
+          </Row>
+        )}
+      </div>
     </>
   );
 };

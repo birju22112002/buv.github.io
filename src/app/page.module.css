@@ -1,0 +1,40 @@
+/** @format */
+
+.darkText {
+  color: #fff !important;
+}
+
+.darkBackground {
+  background-color: #000 !important;
+  color: #fff;
+}
+
+.lightBackground {
+  background-color: #fff !important;
+  color: #000;
+}
+
+.darkDivider h1,
+.darkDivider p {
+  color: #fff !important;
+}
+
+.darkButton {
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.darkButton:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.lightButton {
+  color: #000;
+  border: 1px solid #000;
+}
+
+.lightButton:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}

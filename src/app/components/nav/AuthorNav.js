@@ -89,15 +89,6 @@ const AuthorNav = () => {
               Add New
             </Link>
           </Menu.Item>
-          <Menu.Item key='5'>
-            <Link
-              href='/pages/author/categories'
-              className={
-                current === "/pages/author/categories" ? "active" : null
-              }>
-              Categories
-            </Link>
-          </Menu.Item>
         </SubMenu>
 
         {/* library */}

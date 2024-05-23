@@ -1,0 +1,18 @@
+/**
+ * Posts.module.css
+ *
+ * @format
+ */
+
+.darkCard {
+  background-color: #000000;
+  color: #fff;
+}
+
+.darkText {
+  color: #fff;
+}
+.darkBackground {
+  background-color: #000;
+  color: #fff;
+}

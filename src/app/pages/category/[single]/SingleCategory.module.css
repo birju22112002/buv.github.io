@@ -1,0 +1,27 @@
+/** @format */
+
+.darkBackground {
+  background-color: #000000;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.darkCard {
+  background-color: #000000;
+  color: #fff;
+  border: 1px solid #acabab;
+}
+
+.darkButton {
+  background-color: #000000;
+  color: #fff;
+  border: 1px solid #ece8e8;
+}
+
+.darkDivider {
+  border-top-color: #555;
+}
+
+.darkTitle {
+  color: #fff;
+}

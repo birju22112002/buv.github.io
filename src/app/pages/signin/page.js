@@ -3,13 +3,14 @@
 // Signin.js
 import React, { useState, useContext, useEffect } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import axios from "axios";
 import { ThemeContext } from "../../context/ThemeContext";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/auth";
 import { useRouter } from "next/navigation";
+import styles from "./Signin.module.css"; // Import the CSS module
 
 function Signin() {
   const [auth, setAuth] = useContext(AuthContext);
@@ -59,76 +60,87 @@ function Signin() {
   };
 
   return (
-    <Row>
-      <Col span={8} offset={8}>
-        <h1 style={{ paddingTop: "100px" }}>Signin</h1>
-        <Form
-          name='normal_login'
-          className='login-form'
-          initialValues={{ remember: true }}
-          onFinish={onFinish}>
-          <Form.Item name='email' rules={[{ type: "email" }]}>
-            <Input
-              prefix={<MailOutlined className='site-form-item-icon' />}
-              placeholder='Email'
-            />
-          </Form.Item>
-          <Form.Item
-            name='password'
-            rules={[
-              { required: true, message: "Please input your Password!" },
-            ]}>
-            <Input.Password
-              prefix={<LockOutlined className='site-form-item-icon' />}
-              type='password'
-              placeholder='Password'
-            />
-          </Form.Item>
-          <Link
-            href='/pages/forgot'
-            style={{
-              color: theme === "dark" ? "#ffffff" : "#000000",
-              textDecoration: "none",
-            }}>
-            Forgot Password
-          </Link>
+    <div
+      className={
+        theme === "dark" ? styles.darkBackground : styles.lightBackground
+      }>
+      <Row>
+        <Col span={8} offset={8}>
+          <h1 style={{ paddingTop: "100px", fontSize: 35 }}>
+            <b>Signin</b>
+          </h1>
           <br />
-          <br />
-          <Form.Item>
-            <Button
-              type='primary'
-              htmlType='submit'
-              className={`login-form-button ${
-                theme === "dark" ? "dark-theme" : ""
-              }`}
-              style={{
-                backgroundColor: theme === "dark" ? "#333333" : "#f4f4f4",
-                border: "none",
-                color: theme === "dark" ? "#ffffff" : "#000000",
-              }}
-              loading={loading}>
-              Login
-            </Button>
-            <br />
-            <p
+          <Form
+            name='normal_login'
+            className='login-form'
+            initialValues={{ remember: true }}
+            onFinish={onFinish}>
+            <Form.Item name='email' rules={[{ type: "email" }]}>
+              <Input
+                prefix={<MailOutlined className='site-form-item-icon' />}
+                placeholder='Email'
+                className={
+                  theme === "dark" ? styles.transparentInput : styles.lightInput
+                }
+              />
+            </Form.Item>
+            <Form.Item
+              name='password'
+              rules={[
+                { required: true, message: "Please input your Password!" },
+              ]}>
+              <Input.Password
+                prefix={<LockOutlined className='site-form-item-icon' />}
+                type='password'
+                placeholder='Password'
+                className={
+                  theme === "dark" ? styles.transparentInput : styles.lightInput
+                }
+              />
+            </Form.Item>
+            <Link
+              href='/pages/forgot'
               style={{
                 color: theme === "dark" ? "#ffffff" : "#000000",
                 textDecoration: "none",
               }}>
-              Or{" "}
-              <Link
-                href='/pages/signup'
+              Forgot Password
+            </Link>
+            <br />
+            <br />
+            <Form.Item>
+              <Button
+                type='primary'
+                htmlType='submit'
+                className={
+                  theme === "dark"
+                    ? styles.transparentButton
+                    : styles.lightButton
+                }
+                loading={loading}>
+                Login
+              </Button>
+              <br />
+              <p
                 style={{
                   color: theme === "dark" ? "#ffffff" : "#000000",
-                  textDecoration: "underline",
+                  textDecoration: "none",
                 }}>
-                Register now!
-              </Link>
-            </p>
-          </Form.Item>
-        </Form>
-      </Col>
-    </Row>
+                Or{" "}
+                <Link
+                  href='/pages/signup'
+                  style={{
+                    color: theme === "dark" ? "#ffffff" : "#000000",
+                    textDecoration: "underline",
+                  }}>
+                  Register now!
+                </Link>
+              </p>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
+    </div>
   );
 }
 

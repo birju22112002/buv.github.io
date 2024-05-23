@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { UploadOutlined } from "@ant-design/icons";
 import MediaLibrary from "../media/MediaLibrary";
 import { MediaContext } from "../../context/media";
+import styles from "./NewPosts.module.css";
+import { Bold } from "tiptap-extensions";
 
 // Dynamically import JoditEditor
 const JoditEditor = dynamic(() => import("jodit-react"), {
@@ -97,10 +99,45 @@ function NewPostComponent({ page = "admin" }) {
     }
   };
 
+  const buttonStyle = {
+    backgroundColor: theme === "dark" ? "transparent" : "#f0f0f0",
+    color: theme === "dark" ? "#fff" : "#000",
+    border: theme === "dark" ? "2px solid #2f2f2f" : "none",
+  };
+
+  const textStyle = {
+    color: theme === "dark" ? "#fff" : "#000",
+  };
+
+  const inputStyle = {
+    backgroundColor: theme === "dark" ? "transparent" : "#fff",
+    color: theme === "dark" ? "#fff" : "#000",
+    borderColor: theme === "dark" ? "#555" : "#d9d9d9",
+  };
+
+  const joditConfig = {
+    readonly: false,
+    theme: theme === "dark" ? "dark" : "default",
+    style: {
+      backgroundColor: theme === "dark" ? "#2f2f2f" : "#fff",
+      color: theme === "dark" ? "#fff" : "#000",
+    },
+  };
+
   return (
-    <Row>
-      <Col span={14} offset={1}>
-        <h1>Create new post</h1>
+    <Row
+      gutter={[16, 16]}
+      style={{ marginBottom: "20px" }}
+      className={theme === "dark" ? styles.darkBackground : ""}>
+      <Col span={14} offset={1} style={{ padding: "20px" }}>
+        <h1
+          style={{
+            fontSize: 20,
+            color: theme === "dark" ? "white" : "black",
+          }}>
+          <b>Create new post</b>
+        </h1>
+        <br />
         <Input
           size='large'
           value={title}
@@ -112,11 +149,13 @@ function NewPostComponent({ page = "admin" }) {
               JSON.stringify(e.target.value)
             );
           }}
+          style={inputStyle}
+          className={theme === "dark" ? styles.darkInput : ""}
         />
         <br />
         <br />
         <div className='editor-scroll'>
-          {typeof window !== "undefined" && ( // Ensure JoditEditor is only rendered on the client-side
+          {typeof window !== "undefined" && (
             <JoditEditor
               value={content}
               tabIndex={1}
@@ -127,6 +166,7 @@ function NewPostComponent({ page = "admin" }) {
                   JSON.stringify(newContent)
                 );
               }}
+              config={joditConfig}
               onChange={(newContent) => {}}
             />
           )}
@@ -137,18 +177,30 @@ function NewPostComponent({ page = "admin" }) {
 
       <Col span={6} offset={1}>
         <Button
-          style={{ margin: "10px 0px 10px 0px", width: "100%" }}
+          style={{
+            ...buttonStyle,
+            ...textStyle,
+            margin: "10px 0px 10px 0px",
+            width: "100%",
+          }}
           onClick={() => setVisible(true)}>
           Preview
         </Button>
 
         <Button
-          style={{ margin: "10px 0px 10px 0px", width: "100%" }}
+          style={{
+            ...buttonStyle,
+            ...textStyle,
+            margin: "10px 0px 10px 0px",
+            width: "100%",
+          }}
           onClick={() => setMedia({ ...media, showMediaModal: true })}>
           <UploadOutlined /> Featured Image
         </Button>
 
-        <h4>Categories</h4>
+        <h4 style={{ color: theme === "dark" ? "white" : "black" }}>
+          Categories
+        </h4>
         <Select
           mode='multiple'
           allowClear={true}

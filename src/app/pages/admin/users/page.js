@@ -8,12 +8,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { AuthContext } from "../../../context/auth";
+import styles from "./AllUsers.module.css";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 const AllUsers = () => {
   const [auth, setAuth] = useContext(AuthContext);
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
   const [users, setUsers] = useState([]);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     loadUsers();
@@ -34,7 +37,7 @@ const AllUsers = () => {
   };
 
   const handleDelete = async (item) => {
-    if (item._id === auth.user._id) {
+    if (auth?.user && item._id === auth.user._id) {
       alert("You cannot delete yourself");
       return;
     }
@@ -59,16 +62,31 @@ const AllUsers = () => {
     user.name.toLowerCase().includes(keyword)
   );
 
+  const inputStyle = {
+    backgroundColor: theme === "dark" ? "transparent" : "#fff",
+    color: theme === "dark" ? "#fff" : "#000",
+    borderColor: theme === "dark" ? "#555" : "#d9d9d9",
+  };
+
   return (
     <AdminLayout>
-      <Row>
-        <Col span={24}>
-          <h4 style={{ marginBottom: "-10px" }}>All users</h4>
+      <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
+        <Col span={24} style={{ padding: "20px" }}>
+          <h4
+            style={{
+              fontSize: 20,
+              marginBottom: "-10px",
+              color: theme === "dark" ? "#fff" : "#000",
+            }}>
+            <b> All users</b>
+          </h4>
           <br />
 
           <Input
             placeholder='Search'
             type='search'
+            style={inputStyle}
+            className={theme === "dark" ? styles.darkInput : ""}
             value={keyword}
             onChange={(e) => setKeyword(e.target.value.toLowerCase())}
           />
@@ -77,30 +95,78 @@ const AllUsers = () => {
             itemLayout='horizontal'
             dataSource={filteredUsers}
             renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <a onClick={() => handleEdit(item._id)}>edit</a>,
-                  <a
-                    onClick={() => handleDelete(item)}
-                    disabled={item._id === auth.user._id}>
-                    delete
-                  </a>,
-                ]}>
-                <Avatar src={item.image?.url}>{item.name[0]}</Avatar>
-                <List.Item.Meta title={item.name} style={{ marginLeft: 10 }} />
-                <List.Item.Meta
-                  description={item.email}
-                  style={{ marginLeft: 10 }}
-                />
-                <List.Item.Meta
-                  description={item.role}
-                  style={{ marginLeft: 10 }}
-                />
-                <List.Item.Meta
-                  description={`${item.posts.length} post`}
-                  style={{ marginLeft: 10 }}
-                />
-              </List.Item>
+              <>
+                <List.Item
+                  className={styles.listItem}
+                  actions={[
+                    <a
+                      onClick={() => handleEdit(item._id)}
+                      style={{
+                        color: theme === "dark" ? "#fff" : "#000",
+                      }}>
+                      edit
+                    </a>,
+                    <a
+                      onClick={() => handleDelete(item)}
+                      style={{
+                        color: theme === "dark" ? "#fff" : "#000",
+                      }}
+                      disabled={auth?.user && item._id === auth.user._id}>
+                      delete
+                    </a>,
+                  ]}>
+                  <Avatar
+                    src={item.image?.url}
+                    className={theme === "dark" ? styles.avatarDark : ""}>
+                    {item.name[0]}
+                  </Avatar>
+                  <List.Item.Meta
+                    title={
+                      <span
+                        className={
+                          theme === "dark" ? styles.textDark : styles.textLight
+                        }>
+                        {item.name}
+                      </span>
+                    }
+                    style={{ marginLeft: 10 }}
+                  />
+                  <List.Item.Meta
+                    description={
+                      <span
+                        className={
+                          theme === "dark" ? styles.textDark : styles.textLight
+                        }>
+                        {item.email}
+                      </span>
+                    }
+                    style={{ marginLeft: 10 }}
+                  />
+                  <List.Item.Meta
+                    description={
+                      <span
+                        className={
+                          theme === "dark" ? styles.textDark : styles.textLight
+                        }>
+                        {item.role}
+                      </span>
+                    }
+                    style={{ marginLeft: 10 }}
+                  />
+                  <List.Item.Meta
+                    description={
+                      <span
+                        className={
+                          theme === "dark" ? styles.textDark : styles.textLight
+                        }>{`${item.posts.length} post`}</span>
+                    }
+                    style={{ marginLeft: 10 }}
+                  />
+                </List.Item>
+
+                {/* Line break between list items */}
+                {theme === "dark" && <div className={styles.lineBreak}></div>}
+              </>
             )}
           />
         </Col>

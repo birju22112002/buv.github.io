@@ -4,17 +4,29 @@
   width: 25px;
   height: 25px;
   border: none;
-  border-radius: 50%;
+  border-radius: none;
   font-size: 15px;
   cursor: pointer;
-  border-radius: 3px;
+  margin: 5px;
 }
+
+.themebtns.light {
+  background-color: transparent;
+  color: #000000;
+}
+
+.themebtns.dark {
+  background-color: transparent;
+  color: #ffffff;
+}
+
 .container {
   max-width: 1200px;
   min-height: 100vh;
   margin: 0 auto;
   padding: 0 60px;
 }
+
 .light {
   background-color: #000000;
   color: white;

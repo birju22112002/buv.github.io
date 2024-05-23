@@ -44,7 +44,7 @@ function Admin() {
           <RenderProgress
             number={numbers.posts}
             name='Posts'
-            link='/admin/posts'
+            link='/pages/admin/posts'
           />
         </Col>
         {/* comments */}
@@ -54,7 +54,7 @@ function Admin() {
           <RenderProgress
             number={numbers.comments}
             name='Comments'
-            link='/admin/comments'
+            link='/pages/admin/comments'
           />
         </Col>
       </Row>
@@ -67,7 +67,7 @@ function Admin() {
           <RenderProgress
             number={numbers.categories}
             name='Categories'
-            link='/admin/categories'
+            link='/pages/admin/categories'
           />
         </Col>
         {/* users */}
@@ -77,7 +77,7 @@ function Admin() {
           <RenderProgress
             number={numbers.users}
             name='Users'
-            link='/admin/users'
+            link='/pages/admin/users'
           />
         </Col>
       </Row>

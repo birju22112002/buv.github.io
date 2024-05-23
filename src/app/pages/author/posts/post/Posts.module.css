@@ -1,0 +1,33 @@
+/**
+ * Posts.module.css
+ *
+ * @format
+ */
+
+.darkInput::placeholder {
+  color: #fff !important;
+}
+
+.darkButton {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.darkButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+  color: #fff;
+}
+
+.lightButton {
+  background-color: #1890ff;
+  color: #fff;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.lightButton:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+  color: #fff;
+}

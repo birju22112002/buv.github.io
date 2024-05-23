@@ -1,0 +1,49 @@
+/**
+ * categories.module.css
+ *
+ * @format
+ */
+
+.darkInput::placeholder {
+  color: #fff !important;
+}
+
+.input-dark-theme::placeholder {
+  color: #fff !important;
+}
+
+.lineBreak {
+  background-color: #2f2f2f;
+  height: 2px;
+  margin: 15px 0;
+}
+
+.listItem {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: transparent;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.listItem:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+}
+
+/* Dark theme specific styles */
+.dark-theme .listItem {
+  background-color: #333;
+}
+
+.dark-theme .listItem:hover {
+  background-color: #444;
+}
+
+.light-theme .listItem {
+  background-color: #fff;
+}
+
+.light-theme .listItem:hover {
+  background-color: #f0f0f0;
+}
