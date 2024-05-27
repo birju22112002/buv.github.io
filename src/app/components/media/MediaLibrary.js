@@ -1,5 +1,5 @@
 /** @format */
-
+"use client";
 import React, { useContext, useEffect, useState } from "react";
 import { Upload, message, Image, Badge } from "antd";
 import axios from "axios";

@@ -1,34 +1,30 @@
 /** @format */
-
 "use client";
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "./context/auth";
-import { ThemeContext } from "./context/ThemeContext"; // Import ThemeContext
-import Head from "next/head";
-import FullWidthImage from "./components/pages/FullWidthImage";
-import useNumbers from "./hooks/useNumbers";
-import RenderProgress from "./components/posts/RenderProgress";
+import { useEffect, useContext, useState } from "react";
+import axios from "axios";
+import { ThunderboltOutlined } from "@ant-design/icons";
 import { Row, Col, Divider, Button } from "antd";
+import Link from "next/link";
+import FullWidthImage from "./components/pages/FullWidthImage";
+import ParallaxImage from "./components/pages/ParallaxImage";
+import RenderProgress from "./components/posts/RenderProgress";
+import Footer from "./components/pages/Footer";
+import useNumbers from "./hooks/useNumbers";
 import useLatestPosts from "./hooks/useLatestPosts";
 import useCategory from "./hooks/useCategory";
-import Link from "next/link";
-import ParallaxImage from "./components/pages/ParallaxImage";
-import { ThunderboltOutlined } from "@ant-design/icons";
-import Footer from "./components/pages/Footer";
-import axios from "axios";
+import { ThemeContext } from "./context/ThemeContext"; // Import ThemeContext
 import styles from "./page.module.css"; // Import the CSS module
 
 function Home() {
   // context
-  const [auth, setAuth] = useContext(AuthContext);
   const { theme } = useContext(ThemeContext); // Get the current theme from ThemeContext
+
   // hooks
   const { numbers } = useNumbers();
   const { latestPosts } = useLatestPosts();
   const { categories } = useCategory();
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  // const [loading, setLoading] = useState("");
   const [fullWidthImage, setFullWidthImage] = useState("");
 
   useEffect(() => {
@@ -37,7 +33,9 @@ function Home() {
 
   const loadHomepage = async () => {
     try {
-      const response = await axios.get("/page/home");
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/page/home`
+      );
       const data = response.data;
 
       if (!data) {
@@ -56,13 +54,6 @@ function Home() {
 
   return (
     <>
-      <Head>
-        <title>Modern Content Management System - CMS</title>
-        <meta
-          name='description'
-          content='Read latest blog posts on web development'
-        />
-      </Head>
       <div
         className={
           theme === "dark" ? styles.darkBackground : styles.lightBackground

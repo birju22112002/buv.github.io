@@ -131,11 +131,13 @@ function UserComments() {
               <List.Item
                 actions={[
                   <Link
+                    key={item._id}
                     href={`/pages/posts/${item?.postId?.slug}#${item._id}`}
                     style={listItemStyle}>
                     view
                   </Link>,
                   <a
+                    key='edit'
                     onClick={() => {
                       setSelectedComment(item);
                       setVisible(true);
@@ -144,7 +146,10 @@ function UserComments() {
                     style={listItemStyle}>
                     edit
                   </a>,
-                  <a onClick={() => handleDelete(item)} style={listItemStyle}>
+                  <a
+                    key='delete'
+                    onClick={() => handleDelete(item)}
+                    style={listItemStyle}>
                     delete
                   </a>,
                 ]}

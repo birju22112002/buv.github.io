@@ -166,11 +166,13 @@ function Categories() {
                   }`}
                   actions={[
                     <a
+                      key='edit'
                       onClick={() => handleEdit(item)}
                       style={{ color: theme === "dark" ? "#fff" : "#000" }}>
                       edit
                     </a>,
                     <a
+                      key='delete'
                       onClick={() => {
                         handleDelete(item);
                       }}

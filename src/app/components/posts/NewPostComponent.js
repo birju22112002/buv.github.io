@@ -1,5 +1,5 @@
 /** @format */
-
+"use client";
 import React, { useState, useEffect, useContext } from "react";
 import { Layout, Row, Col, Input, Select, Modal, Button, Image } from "antd";
 import dynamic from "next/dynamic";
@@ -11,7 +11,6 @@ import { UploadOutlined } from "@ant-design/icons";
 import MediaLibrary from "../media/MediaLibrary";
 import { MediaContext } from "../../context/media";
 import styles from "./NewPosts.module.css";
-import { Bold } from "tiptap-extensions";
 
 // Dynamically import JoditEditor
 const JoditEditor = dynamic(() => import("jodit-react"), {

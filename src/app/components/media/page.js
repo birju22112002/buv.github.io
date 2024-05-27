@@ -1,5 +1,5 @@
 /** @format */
-
+"use client";
 import React, { useContext } from "react";
 import UploadFile from "./UploadFile";
 import MediaLibrary from "./MediaLibrary";

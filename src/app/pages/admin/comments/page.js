@@ -118,11 +118,15 @@ function Comments() {
                 <List.Item
                   actions={[
                     <Link
+                      key='view'
                       href={`/pages/posts/${item?.postId?.slug}#${item._id}`}
                       style={listItemStyle}>
                       view
                     </Link>,
-                    <a onClick={() => handleDelete(item)} style={listItemStyle}>
+                    <a
+                      key='delete'
+                      onClick={() => handleDelete(item)}
+                      style={listItemStyle}>
                       delete
                     </a>,
                   ]}

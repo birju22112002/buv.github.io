@@ -100,6 +100,7 @@ const AllUsers = () => {
                   className={styles.listItem}
                   actions={[
                     <a
+                      key='edit'
                       onClick={() => handleEdit(item._id)}
                       style={{
                         color: theme === "dark" ? "#fff" : "#000",
@@ -107,6 +108,7 @@ const AllUsers = () => {
                       edit
                     </a>,
                     <a
+                      key='delete'
                       onClick={() => handleDelete(item)}
                       style={{
                         color: theme === "dark" ? "#fff" : "#000",

@@ -1,5 +1,5 @@
 /** @format */
-
+"use client";
 import React, { useContext } from "react";
 import { Upload, message, Button } from "antd";
 import { AuthContext } from "../../context/auth";

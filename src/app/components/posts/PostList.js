@@ -26,10 +26,13 @@ const PostsList = ({ posts, handleDelete, handleEdit }) => {
             className={styles.listItem}
             style={{ color: textStyle.color, margin: 15 }}
             actions={[
-              <a style={textStyle} onClick={() => handleEdit(item)}>
+              <a key='edit' style={textStyle} onClick={() => handleEdit(item)}>
                 edit
               </a>,
-              <a style={textStyle} onClick={() => handleDelete(item)}>
+              <a
+                key='delete'
+                style={textStyle}
+                onClick={() => handleDelete(item)}>
                 delete
               </a>,
             ]}>

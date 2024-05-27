@@ -1,6 +1,6 @@
 /** @format */
 
-// context/media.js
+"use client";
 import { createContext, useState } from "react";
 
 const MediaContext = createContext();
